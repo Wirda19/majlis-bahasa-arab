@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rumah Empat Maharah — Objek AR Bahasa Arab</title>
+<script src="rumah_AR_b64.js"></script>
+<script type="module" src="model-viewer.min.js"></script>
+<style>
+@font-face{font-family:Lora;src:url(lora-latin-700-normal.woff2) format('woff2');font-weight:700}
+@font-face{font-family:Amiri;src:url(amiri-arabic-700-normal.woff2) format('woff2');font-weight:700}
+@font-face{font-family:Poppins;src:url(poppins-latin-400-normal.woff2) format('woff2');font-weight:400}
+@font-face{font-family:Poppins;src:url(poppins-latin-600-normal.woff2) format('woff2');font-weight:600}
+*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#F7F0E3;color:#2B1D12}
+header{background:#1F3D2B;color:#F4ECDD;padding:14px 18px}
+header b{font-family:Lora,serif;font-size:22px;display:block}header span{font-size:12.5px;color:#D9C29A}
+model-viewer{width:100%;height:58vh;min-height:320px;background:linear-gradient(#DCE6D8,#F7F0E3);--poster-color:transparent}
+.hs{width:30px;height:30px;border-radius:50%;border:3px solid #fff;background:#B8893B;color:#fff;font:600 14px Poppins;box-shadow:0 2px 6px #0006;cursor:pointer}
+.hs.on{background:#1F3D2B}
+#arb{position:absolute;right:12px;bottom:12px;background:#B8893B;color:#1F1200;border:0;border-radius:999px;padding:12px 18px;font:600 15px Poppins;box-shadow:0 2px 8px #0005}
+main{padding:14px 18px 28px;max-width:720px;margin:0 auto}
+#info{background:#fff;border-radius:14px;padding:14px;border-left:8px solid #B8893B;min-height:118px}
+#info h2{margin:0 0 4px;font:700 20px Lora,serif;color:#1F3D2B}#info p{margin:6px 0;font-size:14.5px;line-height:1.5}
+#info .q{font-style:italic;color:#6B4423}
+.how{font-size:13.5px;line-height:1.55;background:#F3EAD8;border-radius:12px;padding:10px 12px;margin-top:12px}
+.how ol{margin:6px 0 0;padding-left:20px}.src{font-size:12px;color:#6d5a47;margin-top:12px;line-height:1.5}
+a{color:#1F3D2B}
+.ab{font-family:Amiri,serif;font-weight:700;font-size:26px;direction:rtl;display:block;color:#1F3D2B}
+</style></head><body>
+<header><b>Rumah Empat Maharah (AR)</b><span>Bahasa Arab MI1223 · S1 PGMI Universitas Sunan Gresik · Titik 1</span></header>
+<model-viewer id="mv" alt="Model 3D rumah belajar dengan empat tiang maharah dan atap tembus pandang" ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" camera-controls touch-action="pan-y" shadow-intensity="1" exposure="1.05" camera-orbit="35deg 68deg 7.5m" min-camera-orbit="auto auto 2m" max-camera-orbit="auto auto 14m" interaction-prompt="auto">
+  <button slot="ar-button" id="arb">Lihat di lantai (AR)</button>
+  <button class="hs" slot="hotspot-1" data-position="-0.55m 2.5m 0.55m" data-normal="0m 1m 0m" data-k="1">1</button>
+  <button class="hs" slot="hotspot-2" data-position="-0.55m 2.5m -0.55m" data-normal="0m 1m 0m" data-k="2">2</button>
+  <button class="hs" slot="hotspot-3" data-position="0.55m 2.5m -0.55m" data-normal="0m 1m 0m" data-k="3">3</button>
+  <button class="hs" slot="hotspot-4" data-position="0.55m 2.5m 0.55m" data-normal="0m 1m 0m" data-k="4">4</button>
+  <button class="hs" slot="hotspot-5" data-position="0.8m 0.45m 0.8m" data-normal="0m 1m 0m" data-k="5">5</button>
+  <button class="hs" slot="hotspot-6" data-position="0m 4.5m 0m" data-normal="0m 1m 0m" data-k="6">6</button>
+</model-viewer>
+<main>
+<div id="info"><h2>Ketuk titik bernomor 1–6</h2><p>Setiap titik membuka satu bagian rumah belajar: empat maharah, mufradat, dan struktur kalimat, lengkap dengan satu pertanyaan pemantik. Seret untuk memutar rumah.</p></div>
+<div class="how"><b>Cara memakai di HP</b><ol><li>Tekan tombol <b>Lihat di lantai (AR)</b>, izinkan kamera.</li><li>Arahkan kamera ke lantai yang lapang sampai rumah muncul.</li><li>Kelilingi rumah, lalu ketuk titik 1–6 (bila titik tidak tampil di mode AR bawaan perangkat, pakai daftar di bawah).</li></ol></div>
+<details style="margin-top:12px"><summary><b>Daftar titik (cadangan bila AR tidak mendukung titik)</b></summary><ol style="font-size:14px;line-height:1.55">
+<li><b>Istima':</b> apa yang kamu dengar sebelum bisa menirukan lafal?</li><li><b>Kalam:</b> kalimat sapaan apa yang sudah bisa kamu ucapkan?</li><li><b>Qira'ah:</b> ke arah mana teks Arab dibaca?</li><li><b>Kitabah:</b> mengapa bentuk huruf berubah di awal, tengah, dan akhir kata?</li><li><b>Mufradat:</b> kosakata apa yang paling sering dipakai di kelas MI?</li><li><b>Struktur kalimat:</b> apa beda sekumpulan kata dengan kalimat sempurna?</li></ol></details>
+<p class="src">Kembali ke <a href="index.html">ruang VR Majlis Bahasa Arab</a>. Model 3D dibuat dengan bantuan AI (Claude) memakai kode Python, tanpa aset pihak ketiga. Penampil: model-viewer (Google, Apache-2.0). Isi dan harakat Arab disusun dengan bantuan AI dan harus diperiksa dosen.</p>
+</main>
+<script>
+(function(){const m=document.getElementById('mv');m.src=URL.createObjectURL(new Blob([Uint8Array.from(atob(window.RUMAH_B64),c=>c.charCodeAt(0))],{type:'model/gltf-binary'}));})();
+const D={1:['Tiang 1 · Istima\' (الاستماع)','Istima\' adalah menyimak kata, ungkapan, dan dialog. Telinga yang terlatih menjadi dasar lafal yang tepat.','Apa yang kamu dengar sebelum bisa menirukan lafal?'],
+2:['Tiang 2 · Kalam (الكلام)','Kalam adalah berbicara dan berdialog, misalnya salam, memperkenalkan diri, dan bertanya kabar.','Kalimat sapaan apa yang sudah bisa kamu ucapkan?'],
+3:['Tiang 3 · Qira\'ah (القراءة)','Qira\'ah adalah membaca kata, kalimat, dan teks pendek. Teks Arab dibaca dari kanan ke kiri.','Ke arah mana teks Arab dibaca, dan apa bedanya dengan teks Latin?'],
+4:['Tiang 4 · Kitabah (الكتابة)','Kitabah adalah menulis kata, kalimat, dan teks sederhana. Bentuk huruf bisa berubah di awal, tengah, dan akhir kata.','Mengapa bentuk huruf berubah di awal, tengah, dan akhir kata?'],
+5:['Umpak · Mufradat (المفردات)','Umpak menopang tiang. Mufradat atau kosakata menopang keempat maharah.','Kosakata apa yang paling sering dipakai di kelas MI?'],
+6:['Atap · Struktur kalimat','Atap menaungi semuanya: isim, fi\'il, dan harf yang tersusun menjadi kalimat sempurna.','Apa beda sekumpulan kata dengan kalimat yang sempurna?']};
+document.querySelectorAll('.hs').forEach(b=>b.addEventListener('click',()=>{const d=D[b.dataset.k];document.querySelectorAll('.hs').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+document.getElementById('info').innerHTML='<h2></h2><p></p><p class="q"></p>';const i=document.getElementById('info');i.querySelector('h2').textContent=d[0];i.querySelectorAll('p')[0].textContent=d[1];i.querySelector('.q').textContent='Pertanyaan: '+d[2];}));
+</script></body></html>

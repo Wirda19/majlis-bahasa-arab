@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%231F3D2B%27 stroke=%27%23B8893B%27 stroke-width=%274%27/%3E%3Cpath d=%27M14 34 L32 16 L50 34 Z%27 fill=%27%23C47A22%27/%3E%3Crect x=%2722%27 y=%2734%27 width=%274%27 height=%2714%27 fill=%27%23F4ECDD%27/%3E%3Crect x=%2738%27 y=%2734%27 width=%274%27 height=%2714%27 fill=%27%23F4ECDD%27/%3E%3C/svg%3E">
+<title>Majlis Bahasa Arab — Ruang VR Bahasa Arab (MI1223)</title>
+<style>
+@font-face{font-family:'Lora';src:url(lora-latin-700-normal.woff2) format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Lora';src:url(lora-latin-ext-700-normal.woff2) format('woff2');font-weight:700;font-style:normal;font-display:swap;unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Lora';src:url(lora-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Lora';src:url(lora-latin-ext-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap;unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';src:url(poppins-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url(poppins-latin-ext-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';src:url(poppins-latin-600-normal.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url(poppins-latin-ext-600-normal.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap;unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Amiri';src:url(amiri-arabic-700-normal.woff2) format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+:root{--hijau:#1F3D2B;--hijau2:#2E5A41;--krem:#F7F0E3;--krem2:#EFE3CC;--coklat:#6B4423;--emas:#B8893B;--qala:#3F7F76;--qultu:#C47A22;--teks:#2B1D12}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#1b2a22;font-family:Poppins,system-ui,sans-serif;color:var(--teks);-webkit-tap-highlight-color:transparent}
+#scene{position:fixed;inset:0;touch-action:none}
+#scene canvas{display:block;width:100%;height:100%;outline:none}
+button{font:inherit;cursor:pointer}
+a{color:var(--hijau2)}
+.btn{border:0;border-radius:999px;padding:10px 16px;background:var(--hijau);color:#fff;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;line-height:1.2}
+.btn:hover{background:var(--hijau2)}
+.btn.alt{background:#fff;color:var(--hijau);box-shadow:inset 0 0 0 2px var(--hijau)}
+.btn.emas{background:var(--emas)}
+.btn[aria-disabled=true]{background:#cfc6b6;color:#5d5246;cursor:not-allowed;box-shadow:none}
+.btn:focus-visible,.ic:focus-visible{outline:3px solid #f2c14e;outline-offset:2px}
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:10px 12px;pointer-events:none;z-index:5}
+#brand{pointer-events:auto;background:rgba(31,61,43,.92);color:#F4ECDD;border-radius:14px;padding:8px 14px;display:flex;flex-direction:column;gap:4px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+#brand b{font-family:Lora,serif;font-size:17px;letter-spacing:.02em}
+#dots{display:flex;gap:5px}
+#dots i{width:10px;height:10px;border-radius:50%;border:2px solid #D9C29A;display:block}
+#dots i.on{background:#F2C14E;border-color:#F2C14E}
+#dots i.cur{box-shadow:0 0 0 2px #fff}
+#hud .sp{flex:1}
+.ic{pointer-events:auto;width:42px;height:42px;border-radius:12px;border:0;background:rgba(247,240,227,.95);color:var(--hijau);font-size:19px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.ic[aria-pressed=false]{opacity:.6}
+/* tour bar */
+#tour{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:8px;background:rgba(31,61,43,.95);padding:8px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:calc(100vw - 16px)}
+#tour .nav{width:44px;height:44px;border-radius:50%;border:0;background:#F4ECDD;color:var(--hijau);font-size:20px;font-weight:700;flex:none}
+#tour .nav:disabled{opacity:.35;cursor:default}
+#tourName{color:#F4ECDD;min-width:0;padding:0 6px;text-align:center;line-height:1.2}
+#tourName small{display:block;color:#D9C29A;font-size:11px;letter-spacing:.14em}
+#tourName span{font-family:Lora,serif;font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:44vw}
+#tourOpen{background:var(--emas);flex:none}
+/* guide card */
+#guide{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);width:min(560px,calc(100vw - 20px));background:var(--krem);border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.32);z-index:6;border:2px solid var(--emas);display:none}
+#guide.show{display:block;animation:up .35s ease}
+@media (min-width:900px){#guide{left:16px;transform:none;bottom:16px;width:420px}#guide.show{animation:none}}
+@keyframes up{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+#guide header{display:flex;align-items:center;gap:10px;padding:10px 12px 0 14px}
+#guide header b{font-family:Lora,serif;font-size:17px;color:var(--hijau);flex:1}
+#guide .x{border:0;background:transparent;font-size:20px;color:var(--coklat);width:34px;height:34px}
+#guide p{margin:6px 14px 0;font-size:14px;line-height:1.5}
+#guide .q{font-family:Lora,serif;font-style:italic;color:var(--coklat);border-left:4px solid var(--emas);padding-left:10px}
+#guide .row{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 12px}
+/* panel */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(470px,100vw);background:var(--krem);z-index:9;transform:translateX(105%);transition:transform .35s ease;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(0,0,0,.35)}
+#panel.open{transform:none}
+#panel .top{background:var(--hijau);color:#F4ECDD;padding:14px 14px 0;position:relative}
+#panel .top .num{width:46px;height:46px;border-radius:50%;border:3px solid var(--emas);display:flex;align-items:center;justify-content:center;font-family:Lora,serif;font-size:24px;font-weight:700;float:left;margin-right:12px}
+#panel .top h2{font-family:Lora,serif;margin:2px 44px 0 0;font-size:22px;line-height:1.15}
+#panel .top .ar{font-family:Amiri,serif;font-size:26px;color:#E7CF97;direction:rtl;margin-top:2px;min-height:4px}
+#panel .top .close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:10px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:20px}
+#tabs{display:flex;gap:4px;margin-top:12px;clear:both}
+#tabs button{flex:1;border:0;background:transparent;color:#D9C29A;padding:10px 4px;font-weight:600;font-size:13px;border-bottom:3px solid transparent}
+#tabs button[aria-selected=true]{color:#fff;border-bottom-color:var(--emas)}
+#pbody{overflow:auto;padding:16px 16px 40px;flex:1;font-size:14.5px;line-height:1.55;-webkit-overflow-scrolling:touch}
+#pbody h3{font-family:Lora,serif;color:var(--hijau);font-size:17px;margin:18px 0 8px}
+#pbody h3:first-child{margin-top:0}
+#pbody .q{font-family:Lora,serif;font-style:italic;font-size:17px;color:var(--coklat);border-left:5px solid var(--emas);padding:2px 0 2px 12px;margin:0 0 12px}
+#pbody ol.tasks{padding-left:22px}
+#pbody ol.tasks li{margin-bottom:6px}
+.card{background:#fff;border-radius:12px;padding:12px 14px;margin:10px 0;box-shadow:0 1px 0 #e4d6bb,0 2px 10px rgba(107,68,35,.08)}
+.card .lab{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--coklat);text-transform:uppercase;margin-bottom:4px}
+.en{font-family:Lora,serif;font-size:15px}
+.src{font-size:12px;color:#6d5a47;margin-top:6px}
+details{background:#fbf7ef;border-radius:10px;padding:8px 12px;margin:10px 0;border:1px solid #e8dcc3}
+details summary{cursor:pointer;font-weight:600;color:var(--hijau2)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.links a{font-size:13px;background:#fff;border:1px solid #d9c9a8;border-radius:999px;padding:6px 12px;text-decoration:none;color:var(--hijau)}
+.actions{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.actions .btn{justify-content:center}
+.note{font-size:12.5px;color:#6d5a47;background:#f3ead8;border-radius:10px;padding:8px 10px;margin-top:10px}
+.foot{font-size:11.5px;color:#7a6650;border-top:1px solid #e2d4b8;margin-top:22px;padding-top:10px;line-height:1.45}
+/* labelling chips */
+.sent[data-l]{border-left-color:#B8893B;background:#fbf5e6}
+.chips button.on{background:#1F3D2B;color:#fff;border-color:#1F3D2B}
+.chips button{cursor:pointer}
+.sent{background:#fff;border-radius:10px;padding:10px 12px;margin:8px 0;border-left:6px solid #ddd}
+.sent .en{font-size:14.5px}
+.sent .tr{font-size:12.5px;color:#6d5a47;margin-top:4px}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chips button{border:1px solid #cdbd9c;background:#fff;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:600;color:#5c4a36}
+.sent[data-l=SUMBER]{border-left-color:var(--qala);background:#e8f2f0}
+.sent[data-l=PENULIS]{border-left-color:var(--qultu);background:#fbefdd}
+.sent[data-l=CAMPUR]{border-left-color:#8a6fb0;background:repeating-linear-gradient(135deg,#e8f2f0 0 10px,#fbefdd 10px 20px)}
+.chips button.on[data-v=SUMBER]{background:var(--qala);color:#fff;border-color:var(--qala)}
+.chips button.on[data-v=PENULIS]{background:var(--qultu);color:#fff;border-color:var(--qultu)}
+.chips button.on[data-v=CAMPUR]{background:#8a6fb0;color:#fff;border-color:#8a6fb0}
+.w{cursor:pointer;border-radius:6px;padding:0 1px}
+.w.mark{background:#F2C14E;box-shadow:0 0 0 2px #c79a2a}
+pre.prompt{white-space:pre-wrap;background:#1F3D2B;color:#F4ECDD;border-radius:10px;padding:12px;font-size:12.5px;line-height:1.5;font-family:ui-monospace,Menlo,monospace}
+textarea{width:100%;min-height:150px;border-radius:10px;border:1px solid #cdbd9c;padding:10px;font:inherit;font-size:14px;background:#fff}
+.cnt{font-size:12px;color:#6d5a47;text-align:right}
+.cnt.ok{color:#2E7D4F;font-weight:600}
+.chk label{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.chk input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--hijau)}
+table.map{width:100%;border-collapse:collapse;font-size:13px}
+table.map td,table.map th{border:1px solid #e0d2b6;padding:6px;text-align:left;vertical-align:top}
+table.map th{background:#f3ead8}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+/* minimap */
+#map{position:fixed;right:12px;bottom:76px;width:132px;height:132px;z-index:5;background:rgba(247,240,227,.93);border-radius:50%;box-shadow:0 4px 16px rgba(0,0,0,.28);padding:4px}
+#map svg{width:100%;height:100%;display:block}
+#map .st{cursor:pointer}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:20;background:rgba(14,26,19,.72);display:flex;align-items:center;justify-content:center;padding:14px}
+.ov[hidden]{display:none}
+.dlg{background:var(--krem);border-radius:20px;max-width:620px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5);border:3px solid var(--emas)}
+.dlg .hd{background:var(--hijau);color:#F4ECDD;padding:20px 22px 16px;border-radius:16px 16px 0 0;position:relative}
+.dlg .hd .ar{font-family:Amiri,serif;font-size:30px;color:#E7CF97;position:absolute;right:20px;top:14px;direction:rtl}
+.dlg h1{font-family:Lora,serif;margin:0;font-size:28px}
+.dlg .hd p{margin:6px 0 0;color:#D9C29A;font-size:13px}
+.dlg .bd{padding:16px 22px 20px;font-size:14.5px;line-height:1.55}
+.ctl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.ctl div{background:#fff;border-radius:12px;padding:8px 10px;font-size:13px;display:flex;gap:8px;align-items:center}
+.ctl b{font-size:20px}
+.dlg .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+#loader{position:fixed;inset:0;z-index:30;background:#1F3D2B;color:#F4ECDD;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px}
+#loader .ar{font-family:Amiri,serif;font-size:42px;color:#E7CF97}
+#loader .bar{width:min(320px,80vw);height:8px;border-radius:8px;background:rgba(255,255,255,.15);overflow:hidden}
+#loader .bar i{display:block;height:100%;width:0;background:var(--emas);transition:width .2s}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(31,61,43,.95);color:#fff;padding:10px 16px;border-radius:12px;z-index:12;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+#xr{display:none}
+@media (max-width:640px){
+  #panel{top:auto;height:78vh;width:100vw;border-radius:18px 18px 0 0;transform:translateY(105%)}
+  #panel.open{transform:none}
+  #map{width:96px;height:96px;bottom:auto;top:66px;right:10px}
+  #brand b{font-size:15px}
+  #tourName span{max-width:40vw;font-size:14px}
+  #tour .nav{width:40px;height:40px}
+  #tourOpen{padding:10px 12px}
+  #guide{bottom:72px}
+  .ctl{grid-template-columns:1fr}
+  .dlg .hd .ar{position:static;text-align:right;font-size:24px;line-height:1.2;margin-bottom:2px}
+  #toast{top:172px}
+}
+table.map td .ab{white-space:nowrap}
+.ab{font-family:Amiri,serif;font-weight:700;font-size:21px;direction:rtl;unicode-bidi:isolate;line-height:1.7;color:#1F3D2B}
+.sent[data-l=ISIM]{border-left-color:#2F655D;background:#e8f2f0}.sent[data-l=FIIL]{border-left-color:#B8893B;background:#fbefdd}.sent[data-l=HARF]{border-left-color:#8a6fb0;background:#efe9f6}
+.sent[data-l=SAPAAN]{border-left-color:#2F655D;background:#e8f2f0}.sent[data-l=NAMA]{border-left-color:#B8893B;background:#fbefdd}.sent[data-l=ASAL]{border-left-color:#8a6fb0;background:#efe9f6}.sent[data-l=KABAR]{border-left-color:#B24A3A;background:#f8e6e1}
+</style>
+</head>
+<body>
+<div id="scene" aria-label="Ruang tiga dimensi Majlis Bahasa Arab"></div>
+
+<div id="loader" role="status">
+  <div class="ar" lang="ar" dir="rtl">مَجْلِسُ اللُّغَةِ الْعَرَبِيَّةِ</div>
+  <div style="font-family:Lora,serif;font-size:24px;font-weight:700">Majlis Bahasa Arab</div>
+  <div class="bar"><i id="lbar"></i></div>
+  <div id="ltxt" style="font-size:13px;color:#D9C29A">Memuat ruang…</div>
+</div>
+
+<div id="hud">
+  <div id="brand"><b>Majlis Bahasa Arab</b><div id="dots" aria-label="Kemajuan delapan titik"></div></div>
+  <div class="sp"></div>
+  <button class="ic" id="bList" aria-label="Daftar titik" title="Daftar titik">☰</button>
+  <button class="ic" id="bSound" aria-label="Suara" aria-pressed="true" title="Suara">🔊</button>
+  <button class="ic" id="bHelp" aria-label="Petunjuk" title="Petunjuk">?</button>
+  <button class="ic" id="bFull" aria-label="Layar penuh" title="Layar penuh">⛶</button>
+  <button class="ic" id="xr" aria-label="Masuk mode VR" title="Masuk mode VR">VR</button>
+</div>
+
+<div id="map" aria-label="Peta mini"></div>
+
+<div id="guide" role="region" aria-live="polite">
+  <header><b id="gTitle"></b><button class="x" id="gClose" aria-label="Tutup pemandu">×</button></header>
+  <p class="q" id="gQ"></p>
+  <p id="gText"></p>
+  <div class="row">
+    <button class="btn emas" id="gOpen">Buka papan tugas</button>
+    <button class="btn alt" id="gSpeak">🔊 Dengarkan</button>
+  </div>
+</div>
+
+<nav id="tour" aria-label="Tur terpandu">
+  <button class="nav" id="tPrev" aria-label="Titik sebelumnya">‹</button>
+  <div id="tourName"><small id="tSmall">TUR TERPANDU</small><span id="tName">Mulai di Gerbang</span></div>
+  <button class="btn" id="tourOpen">Papan</button>
+  <button class="nav" id="tNext" aria-label="Titik berikutnya">›</button>
+</nav>
+
+<aside id="panel" aria-label="Papan tugas" aria-hidden="true">
+  <div class="top">
+    <div class="num" id="pNum">0</div>
+    <h2 id="pTitle"></h2>
+    <div class="ar" id="pAr" lang="ar"></div>
+    <button class="close" id="pClose" aria-label="Tutup papan">×</button>
+    <div id="tabs" role="tablist">
+      <button role="tab" data-t="pandu" aria-selected="true">Pemandu</button>
+      <button role="tab" data-t="bahan" aria-selected="false">Bahan</button>
+      <button role="tab" data-t="tugas" aria-selected="false">Tugas &amp; formulir</button>
+    </div>
+  </div>
+  <div id="pbody"></div>
+</aside>
+
+<div class="ov" id="welcome" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="wT">
+    <div class="hd"><h1 id="wT">Majlis Bahasa Arab</h1><p>Ruang VR Bahasa Arab · MI1223 · S1 PGMI Universitas Sunan Gresik</p></div>
+    <div class="bd">
+      <p>Majlis adalah ruang tempat orang duduk belajar bersama. Di sini kamu melatih empat maharah bahasa Arab: menyimak, berbicara, membaca, dan menulis, dengan kosakata dan struktur dasar tentang identitas diri, keluarga, dan lingkungan.</p>
+      <p>Jelajahi <b>8 titik</b> secara berurutan, mengikuti Minggu 1–16 RPS (proyek lagu pada UTS dan UAS). Setiap titik punya poster, bahan, dan papan tugas; jawabanmu tersimpan di peramban ini dan bisa disalin untuk dikirim lewat LMS e-Santri.</p>
+      <div class="ctl">
+        <div><b>☝️</b> Seret layar untuk melihat sekeliling</div>
+        <div><b>👣</b> Ketuk lantai atau lingkaran emas untuk berjalan</div>
+        <div><b>📋</b> Ketuk poster atau papan untuk membuka tugas</div>
+        <div><b>›</b> Tombol Lanjut untuk tur terpandu (laptop: W A S D)</div>
+      </div>
+      <p class="note">Siapkan buku utama: Al-'Arabiyyatu lil Hayah, Buku 1 dan 2 (Hamid dkk., 2025). Pakai kode peserta yang sama (inisial + 2 digit NIM) di setiap jawaban yang kamu salin.</p>
+      <div class="row">
+        <button class="btn emas" id="wStart">Masuk lewat gerbang</button>
+        <button class="btn alt" id="wFree">Jelajah bebas</button>
+        <button class="btn alt" id="wAbout">Tentang media ini</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="listOv" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="lT">
+    <div class="hd"><h1 id="lT" style="font-size:22px">Delapan titik tur</h1><p>Ketuk nama titik untuk berjalan ke sana.</p></div>
+    <div class="bd"><div id="listBody"></div><div class="row"><button class="btn alt" data-close>Tutup</button></div></div>
+  </div>
+</div>
+
+<div class="ov" id="aboutOv" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="aT">
+    <div class="hd"><h1 id="aT" style="font-size:22px">Tentang media ini</h1><p>Mini project pelatihan AR/VR dan GenAI (ICE Institute, DITDAYA PEKERTI 02, 2026)</p></div>
+    <div class="bd">
+      <p><b>Mata kuliah:</b> Bahasa Arab (MI1223), semester 1, 2 SKS, Program Studi Pendidikan Guru Madrasah Ibtidaiyyah (PGMI), Fakultas Agama Islam, Universitas Sunan Gresik. Dosen pengembang RPS: Wirdatul Istiqomah, M.Pd.</p>
+      <p><b>Sasaran:</b> CPMK1–3 dan Sub-CPMK1–6 pada RPS: mufradat, ungkapan, struktur dasar, dan empat maharah (istima', kalam, qira'ah, kitabah).</p>
+      <p><b>Tiga teknologi:</b> ruang VR web ini; objek AR Rumah Empat Maharah (<a href="ar.html" target="_blank" rel="noopener">ar.html</a>, dibuka langsung di HP tanpa akun); dan GenAI sebagai teman dialog (Titik 2), cermin koreksi (Titik 4), dan asisten ide lagu (Titik 5) yang tidak menulis tugas mahasiswa.</p>
+      <h3 style="font-family:Lora,serif;color:#1F3D2B">Pernyataan penggunaan AI</h3>
+      <p>Ruang VR, model 3D, poster, dan kodenya dibuat dengan bantuan AI (Claude, Anthropic), lalu harus diperiksa dosen pengembang, terutama harakat dan ejaan Arab. Poster berisi diagram sederhana buatan kode, tanpa gambar hasil generator. Contoh dan teks latihan bukan kutipan buku. Suara memakai pembaca teks bawaan peramban dan bergantung pada perangkat.</p>
+      <h3 style="font-family:Lora,serif;color:#1F3D2B">Sumber dan lisensi</h3>
+      <p style="font-size:13px">Rujukan utama menurut RPS: Hamid dkk. (2025), Al-'Arabiyyatu lil Hayah, Buku 1 dan 2. Isi buku tidak dikutip.<br>
+      Pustaka three.js (lisensi MIT). Huruf Lora dan Poppins (SIL Open Font License); huruf Arab Amiri (SIL Open Font License).</p>
+      <div class="row"><button class="btn alt" data-close>Tutup</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="pendopo_b64.js"></script>
+<script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script>
+<script>
+/* ======== ISI STASIUN: Bahasa Arab (MI1223) ======== */
+window.PQ_CONFIG = {
+  forms: [], videos: [],
+  ar: "ar.html",
+  book: "Hamid dkk. (2025), Al-'Arabiyyatu lil Hayah"
+};
+const L = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}</a>`;
+const A = (t) => `<span class="ab" lang="ar" dir="rtl">${t}</span>`;
+const SAY = (t, label = '🔊 Dengarkan') => `<button class="btn alt say" data-say="${t}" style="padding:4px 10px;font-size:12px">${label}</button>`;
+const AI_NOTE = '<p class="src">Contoh, teks latihan, dan tokoh pada titik ini disusun dengan bantuan AI (Claude) dan wajib diperiksa dosen, terutama harakat dan ejaan Arabnya. Bukan kutipan buku.</p>';
+const NOTE_BOOK = (h) => `<p class="src">Rujukan menurut RPS: ${h}. Ringkasan di sini ditulis dengan kata sendiri dan tidak mengutip buku; rincian bab dan halaman dibaca di buku utama.</p>`;
+const chipsX = (arr) => `<div class="chips">${arr.map(([v, t]) => `<button data-v="${v}">${t}</button>`).join('')}</div>`;
+const sent = (k, tag, txt, labs) => `<div class="sent" data-k="${k}"><div class="lab" style="font-size:11px;font-weight:600;color:#6B4423">${tag}</div><div class="en">${txt}</div>${chipsX(labs)}</div>`;
+const KALAM = [['ISIM', 'Isim'], ['FIIL', "Fi'il"], ['HARF', 'Harf']];
+const FUNGSI = [['SAPAAN', 'Sapaan/salam'], ['NAMA', 'Tanya nama'], ['ASAL', 'Tanya asal'], ['KABAR', 'Tanya kabar']];
+
+const PROMPT_TEMAN = `Kamu adalah TEMAN LATIHAN DIALOG bahasa Arab tingkat pemula, bukan guru dan bukan penerjemah. Tugasmu:
+(1) mulai dengan salam dan satu pertanyaan sederhana (nama, asal, atau kabar);
+(2) pakai hanya kosakata dan pola kalimat pendek yang berikut: [tempel daftar mufradat yang sudah kamu pelajari];
+(3) tulis dengan harakat dan beri transliterasi Latin di bawahnya;
+(4) tunggu jawabanku, lalu lanjutkan satu giliran saja (maksimal dua kalimat);
+(5) bila jawabanku keliru, tunjukkan letak kekeliruannya dengan bertanya, jangan langsung menulis ulang jawabanku.
+ATURAN: jangan menambah kosakata di luar daftar; bila ragu, katakan "periksa di kamus atau tanyakan dosen"; jangan mengarang kaidah.
+Mulai sekarang.`;
+const PROMPT_CERMIN = `Kamu adalah CERMIN KOREKSI untuk latihan dhamir dan isim isyarah, bukan penulis jawaban. Tugasmu HANYA:
+(1) baca lima kalimat Arab buatanku di bawah;
+(2) untuk setiap kalimat, tunjukkan kata mana yang menurutmu dhamir (munfasil atau muttasil) dan kata mana yang isim isyarah, lalu tulis satu pertanyaan yang membuatku memeriksa kesesuaian jenis (mudzakkar/muannats) dan jumlah (mufrad/jama');
+(3) berhenti. Jangan menulis ulang kalimatku, jangan memberi jawaban yang benar, jangan menambah contoh baru.
+ATURAN: bila kamu tidak yakin, katakan "periksa di buku atau tanyakan dosen". Aku yang memutuskan benar atau salah.
+Kalimatku: [tempel lima kalimat di sini]`;
+const PROMPT_LIRIK = `Kamu adalah ASISTEN IDE untuk proyek lagu mufradat bahasa Arab anak MI, bukan penulis lagunya. Tugasmu:
+(1) dari daftar mufradat dan tema yang kutempel, usulkan lima ide gerakan atau aktivitas yang bisa dilakukan anak MI saat menyanyikannya;
+(2) usulkan tiga pola pengulangan sederhana (mis. kata + hadza/hadzihi + kata) yang mudah diingat;
+(3) berhenti.
+ATURAN: jangan menulis lirik lengkap untukku; jangan menambah mufradat di luar daftarku; jangan menyebut lagu atau melodi yang berhak cipta; bila ragu pada makna atau harakat, katakan harus diperiksa di Kamus al-Munawwir atau dosen.
+Tema: [isi]. Mufradatku (10–15 kata): [tempel di sini]`;
+const DISCLOSURE = 'Saya memakai [nama alat AI] untuk [tujuan, mis. latihan dialog atau mencari ide gerakan lagu] pada bagian [bagian tugas]. Hasilnya saya periksa dengan [cara verifikasi, mis. Kamus al-Munawwir, buku Al-Arabiyyatu lil Hayah, atau dosen]. Seluruh teks Arab pada tugas ini saya tulis sendiri; bagian yang saya ubah setelah memeriksa adalah [isi].';
+const ans = (k, label, min, max) => ({ k, label, min, max });
+const DB_LINKS = '<div class="links">' + L('https://esantri.usg.ac.id/esantri/', 'LMS e-Santri') + '</div>';
+
+window.PQ_STATIONS = [
+{ n:0, name:'Gerbang Hijaiyyah', ar:'حُرُوفٌ', poster:'S0_Gerbang', q:'Mengapa guru MI perlu bisa berbahasa Arab, dan sejauh mana kamu bisa sekarang?',
+  guide:'Selamat datang di Majlis Bahasa Arab. Gerbang ini bertuliskan huruf hijaiyyah, pintu pertama menuju empat maharah: menyimak, berbicara, membaca, dan menulis. Bunyikan bel di samping gerbang, baca ringkasan tentang urgensi bahasa Arab di MI, lalu kerjakan tes PRA tanpa bantuan AI. Hasil PRA dibandingkan dengan PASCA di titik terakhir.',
+  board:['Bunyikan bel untuk mulai.','Baca ringkasan urgensi dan empat maharah.','Kerjakan PRA tanpa AI: kata Arab yang kamu tahu dan alasanmu.'],
+  tasks:['Baca ringkasan urgensi bahasa Arab di MI dan empat maharah.','PRA (tanpa AI): tulis kata atau ungkapan Arab yang sudah kamu tahu beserta artinya (boleh huruf Latin), lalu tulis 60–100 kata tentang mengapa guru MI perlu bahasa Arab.','Nilai dirimu 1–4 untuk tiap maharah (istima\', kalam, qira\'ah, kitabah).'],
+  answers:[ans('pra_kata','PRA: kata atau ungkapan Arab yang kamu tahu, beserta artinya',0,0),ans('pra_urgensi','PRA (tanpa AI): mengapa guru MI perlu bahasa Arab',60,100),ans('pra_diri','Nilai diri 1–4: istima\', kalam, qira\'ah, kitabah',0,0)],
+  bahan: () => `
+   <h3>Mengapa bahasa Arab untuk guru MI?</h3>
+   <div class="card"><div class="lab">Bahasa sumber ajaran</div>Al-Qur'an dan hadis berbahasa Arab, dan banyak bahan ajar di madrasah memuat istilah Arab. Guru yang paham dasar bahasa Arab lebih mudah membimbing anak membaca, melafalkan, dan memahami makna.</div>
+   <div class="card"><div class="lab">Mata pelajaran di madrasah</div>Bahasa Arab adalah mata pelajaran di MI. Rujukan RPS: KMA No. 183 Tahun 2019; rincian ketentuan dibaca langsung pada dokumennya.</div>
+   <div class="card"><div class="lab">Fondasi mata kuliah lanjutan</div>Mata kuliah ini menjadi dasar bagi Pembelajaran Bahasa Arab MI (MI3233).</div>
+   <h3>Empat maharah (keterampilan)</h3>
+   <table class="map"><tr><th>Maharah</th><th>Arab</th><th>Kegiatan</th></tr>
+   <tr><td>Istima'</td><td>${A('الِاسْتِمَاعُ')}</td><td>Menyimak kata, ungkapan, dan dialog</td></tr>
+   <tr><td>Kalam</td><td>${A('الْكَلَامُ')}</td><td>Berbicara dan berdialog</td></tr>
+   <tr><td>Qira'ah</td><td>${A('الْقِرَاءَةُ')}</td><td>Membaca kata, kalimat, dan teks pendek</td></tr>
+   <tr><td>Kitabah</td><td>${A('الْكِتَابَةُ')}</td><td>Menulis kata, kalimat, dan teks sederhana</td></tr></table>
+   <h3>Huruf hijaiyyah</h3>
+   <p>Ada 28 huruf, ditulis dan dibaca dari kanan ke kiri. Bentuk huruf bisa berubah di awal, tengah, dan akhir kata. Contoh: huruf ${A('ب')} (ba) pada ${A('بَابٌ')}.</p>
+   <h3>Sapaan pembuka</h3>
+   <div class="card">${A('السَّلَامُ عَلَيْكُمْ')} ${SAY('السَّلَامُ عَلَيْكُمْ')}<br>${A('وَعَلَيْكُمُ السَّلَامُ')} ${SAY('وَعَلَيْكُمُ السَّلَامُ')}<br><span class="src">Suara memakai pembaca teks bawaan perangkat; bila tidak ada suara Arab di perangkatmu, tombol ini tidak akan bunyi.</span></div>
+   ${AI_NOTE}${NOTE_BOOK('KMA No. 183 Tahun 2019; Maemunah (2024), Jago Kuasai Bahasa Arab')}
+   <h3>Bunyikan bel</h3><p>Bel di samping gerbang bisa diketuk. Ia menandai awal perjalanan belajarmu di ruang ini.</p>`},
+{ n:1, name:'Rumah Empat Maharah', ar:'مَهَارَاتٌ', poster:'S1_EmpatMaharah', poster2:'S1_EmpatMaharah_QR_AR', q:'Apa yang terjadi pada rumah belajar bila satu maharahnya tidak dilatih?',
+  guide:'Rumah ini berdiri di atas empat tiang: istima\', kalam, qira\'ah, dan kitabah. Umpaknya mufradat, atapnya struktur kalimat. Pindai QR di papan untuk membuka rumah ini dalam AR, ketuk tiap titik, lalu pilih satu maharah yang paling sulit bagimu dan rancang satu kegiatan MI untuk melatihnya.',
+  board:['Pindai QR, buka rumah dalam AR.','Ketuk enam titik dan baca pertanyaannya.','Pilih satu maharah tersulit dan satu kegiatan MI.'],
+  tasks:['Di AR atau di ruang ini, ketuk keenam titik dan catat satu jawaban singkat untuk tiap pertanyaan.','Pilih satu maharah yang paling sulit bagimu. Tulis empat kalimat: mengapa sulit, dan satu kegiatan sederhana untuk anak MI yang melatihnya.'],
+  answers:[ans('t1_titik','Jawaban singkat untuk enam titik AR',0,0),ans('t1_maharah','Empat kalimat: maharah tersulit dan satu kegiatan MI',0,0)],
+  bahan: () => `
+   <div class="card"><div class="lab">Rumah Empat Maharah dalam AR</div><p>Pindai QR di poster sebelah kanan atau buka tautannya di HP. Tekan tombol AR, arahkan kamera ke lantai yang lapang, lalu ketuk titik-titiknya.</p><div class="links">${L(PQ_CONFIG.ar,'Buka rumah di AR')}</div></div>
+   <h3>Peta rumah</h3>
+   <table class="map"><tr><th>Bagian</th><th>Isi</th><th>Pertanyaan pemantik</th></tr>
+   <tr><td>Tiang 1</td><td>Istima' ${A('اسْتِمَاعٌ')}</td><td>Apa yang kamu dengar sebelum bisa menirukan lafal?</td></tr>
+   <tr><td>Tiang 2</td><td>Kalam ${A('كَلَامٌ')}</td><td>Kalimat sapaan apa yang sudah bisa kamu ucapkan?</td></tr>
+   <tr><td>Tiang 3</td><td>Qira'ah ${A('قِرَاءَةٌ')}</td><td>Ke arah mana teks Arab dibaca, dan apa bedanya dengan teks Latin?</td></tr>
+   <tr><td>Tiang 4</td><td>Kitabah ${A('كِتَابَةٌ')}</td><td>Mengapa bentuk huruf berubah di awal, tengah, dan akhir kata?</td></tr>
+   <tr><td>Umpak</td><td>Mufradat ${A('مُفْرَدَاتٌ')}</td><td>Kosakata apa yang paling sering dipakai di kelas MI?</td></tr>
+   <tr><td>Atap</td><td>Struktur kalimat</td><td>Apa beda sekumpulan kata dengan kalimat yang sempurna?</td></tr></table>
+   <p class="note">Cincin emas di tiap tiang menandai tempat bertanya. Labelnya juga terlihat di ruang VR ini.</p>
+   <h3>Keterpaduan empat maharah</h3>
+   <p>Keempat maharah saling menopang: kosakata dari menyimak dipakai saat berbicara, lalu dibaca dan ditulis. Pada Minggu 15 kamu mengintegrasikan keempatnya dalam komunikasi sederhana.</p>
+   ${AI_NOTE}${NOTE_BOOK('Hamid dkk. (2025), Al-\'Arabiyyatu lil Hayah, Buku 1 dan 2; Maemunah (2024)')}`},
+{ n:2, name:'Serambi Mufradat dan Ta\'aruf', ar:'تَعَارُفٌ', poster:'S2_Serambi', q:'Kosakata dan ungkapan apa yang cukup untuk memperkenalkan diri dengan santun?',
+  guide:'Serambi adalah tempat tamu berbincang. Di sini kamu belajar mufradat benda sekitar, angka, warna, lalu dialog ta\'aruf: salam, nama, asal, dan kabar. Cocokkan lima ungkapan dengan fungsinya, susun dialog pendek berpasangan, dan bila mau, berlatih dengan AI sebagai teman dialog yang hanya memakai kosakatamu.',
+  board:['Pelajari mufradat dan dialog ta\'aruf.','Cocokkan lima ungkapan dengan fungsinya.','Tulis dialog pendek (6 baris) dan rekam bersama pasanganmu.'],
+  tasks:['Cocokkan lima ungkapan dengan fungsinya (sapaan, tanya nama, tanya asal, tanya kabar).','Tulis dialog ta\'aruf 6 baris dengan namamu sendiri, lalu rekam bersama pasanganmu (Minggu 3).','Bila memakai AI sebagai teman dialog, tulis pernyataan penggunaan AI dan catat satu hal yang kamu koreksi.'],
+  answers:[ans('t2_dialog','Dialog ta\'aruf 6 baris (huruf Arab atau Latin) dan artinya',0,0),ans('t2_ai','Catatan: satu hal yang kamu koreksi dari AI, atau "tidak memakai AI"',0,0)],
+  bahan: () => `
+   <h3>Mufradat dasar (Minggu 2)</h3>
+   <table class="map"><tr><th>Arab</th><th>Latin</th><th>Arti</th></tr>
+   <tr><td>${A('كِتَابٌ')}</td><td>kitabun</td><td>buku</td></tr>
+   <tr><td>${A('قَلَمٌ')}</td><td>qalamun</td><td>pena</td></tr>
+   <tr><td>${A('مَدْرَسَةٌ')}</td><td>madrasatun</td><td>sekolah</td></tr>
+   <tr><td>${A('بَابٌ')}</td><td>babun</td><td>pintu</td></tr>
+   <tr><td>${A('نَافِذَةٌ')}</td><td>nafidzatun</td><td>jendela</td></tr>
+   <tr><td>${A('كُرْسِيٌّ')}</td><td>kursiyyun</td><td>kursi</td></tr>
+   <tr><td>${A('مَكْتَبٌ')}</td><td>maktabun</td><td>meja</td></tr>
+   <tr><td>${A('سَبُّورَةٌ')}</td><td>sabburatun</td><td>papan tulis</td></tr>
+   <tr><td>${A('مُعَلِّمٌ')} / ${A('مُعَلِّمَةٌ')}</td><td>mu'allimun / mu'allimatun</td><td>guru (laki-laki / perempuan)</td></tr></table>
+   <p><b>Angka 1–5:</b> ${A('وَاحِدٌ، اثْنَانِ، ثَلَاثَةٌ، أَرْبَعَةٌ، خَمْسَةٌ')}. <b>Warna:</b> ${A('أَحْمَرُ')} merah, ${A('أَزْرَقُ')} biru, ${A('أَخْضَرُ')} hijau, ${A('أَصْفَرُ')} kuning, ${A('أَبْيَضُ')} putih, ${A('أَسْوَدُ')} hitam.</p>
+   <h3>Dialog ta'aruf (Minggu 3)</h3>
+   <div class="card">
+   ${A('أ: السَّلَامُ عَلَيْكُمْ.')} ${SAY('السَّلَامُ عَلَيْكُمْ')}<br>
+   ${A('ب: وَعَلَيْكُمُ السَّلَامُ.')}<br>
+   ${A('أ: مَا اسْمُكَ؟')} ${SAY('مَا اسْمُكَ')}<br>
+   ${A('ب: اسْمِي ...، وَمَا اسْمُكَ؟')}<br>
+   ${A('أ: اسْمِي ...، مِنْ أَيْنَ أَنْتَ؟')}<br>
+   ${A('ب: أَنَا مِنْ ...، كَيْفَ حَالُكَ؟')} ${SAY('كَيْفَ حَالُكَ')}<br>
+   ${A('أ: بِخَيْرٍ، الْحَمْدُ لِلَّهِ.')}
+   </div>
+   <p class="src">Arti baris demi baris: salam; jawab salam; "siapa namamu?"; "namaku..., dan namamu?"; "namaku..., dari mana kamu?"; "aku dari..., apa kabarmu?"; "baik, alhamdulillah". Untuk lawan bicara perempuan, ${A('اسْمُكِ')} dan ${A('حَالُكِ')} (dengan kasrah).</p>
+   <h3>Cocokkan ungkapan dengan fungsinya</h3>
+   ${sent(201, 'U1', A('مَا اسْمُكَ؟'), FUNGSI)}
+   ${sent(202, 'U2', A('مِنْ أَيْنَ أَنْتَ؟'), FUNGSI)}
+   ${sent(203, 'U3', A('كَيْفَ حَالُكَ؟'), FUNGSI)}
+   ${sent(204, 'U4', A('السَّلَامُ عَلَيْكُمْ'), FUNGSI)}
+   ${sent(205, 'U5', A('أَنَا مِنْ إِنْدُونِيسِيَا'), [['SAPAAN', 'Sapaan/salam'], ['NAMA', 'Menyebut nama'], ['ASAL', 'Menyebut asal'], ['KABAR', 'Menjawab kabar']])}
+   <details><summary>Petunjuk pencocokan (buka setelah mencoba)</summary><p>U1 tanya nama; U2 tanya asal; U3 tanya kabar; U4 sapaan/salam; U5 menyebut asal ("aku dari Indonesia").</p></details>
+   <h3>Teman dialog AI (opsional)</h3>
+   <p>AI boleh dipakai hanya sebagai lawan latihan, dengan aturan ketat. Tempel daftar mufradat yang sudah kamu pelajari ke prompt ini. AI bisa keliru pada harakat; periksa di buku atau tanyakan dosen.</p>
+   <pre class="prompt" id="pt"></pre>
+   <div class="links"><button class="btn" id="ptCopy">Salin prompt teman dialog</button>${L('https://chatgpt.com','ChatGPT')}${L('https://claude.ai','Claude')}${L('https://gemini.google.com','Gemini')}</div>
+   ${AI_NOTE}${NOTE_BOOK('Hamid dkk. (2025), Buku 2; Mansur (2016); Maemunah (2024)')}`},
+{ n:3, name:'Rak Nahwu', ar:'كَلِمَةٌ', poster:'S3_RakNahwu', q:'Apakah sebuah kata termasuk isim, fi\'il, atau harf, dan kapan susunannya menjadi kalimat sempurna?',
+  guide:'Di rak ini tersimpan kartu kata dalam tiga warna: isim, fi\'il, dan harf. Benang emas menghubungkan kata menjadi kalimat sempurna. Pelajari al-kalam, tanda isim, pembagian isim, serta fi\'il dan harf, lalu golongkan delapan kata dan susun dua kalimat sempurna.',
+  board:['Pelajari al-kalam, isim, fi\'il, dan harf.','Golongkan delapan kata.','Susun dua kalimat sempurna (jumlah mufidah).'],
+  tasks:['Golongkan delapan kata: isim, fi\'il, atau harf. Bila ragu, jelaskan alasannya.','Susun dua kalimat sempurna dari kata-kata yang kamu golongkan dan tulis tanda isim atau fi\'il yang kamu pakai.'],
+  answers:[ans('t3_alasan','Alasan untuk satu kata yang kamu ragukan',0,0),ans('t3_kalimat','Dua kalimat sempurna beserta artinya',0,0)],
+  bahan: () => `
+   <h3>Al-kalam (Minggu 4)</h3>
+   <p>Kata dalam bahasa Arab dibagi tiga: <b>isim</b> (nama: orang, benda, tempat), <b>fi'il</b> (kata kerja yang menunjukkan waktu), dan <b>harf</b> (kata tugas yang baru bermakna bila bergabung dengan kata lain). Rangkaian kata yang memberi makna lengkap disebut kalimat sempurna (jumlah mufidah).</p>
+   <h3>Tanda isim (Minggu 5)</h3>
+   <ul><li>Berawalan ${A('الـ')} (alif lam): ${A('الْكِتَابُ')}</li><li>Bertanwin: ${A('كِتَابٌ')}</li><li>Didahului huruf jar: ${A('فِي الْمَدْرَسَةِ')}</li></ul>
+   <h3>Pembagian isim (Minggu 6)</h3>
+   <table class="map"><tr><th>Pembagian</th><th>Contoh</th></tr>
+   <tr><td>Mudzakkar / muannats</td><td>${A('مُعَلِّمٌ')} / ${A('مُعَلِّمَةٌ')}</td></tr>
+   <tr><td>Mufrad / tasniyah / jama'</td><td>${A('كِتَابٌ')} / ${A('كِتَابَانِ')} / ${A('كُتُبٌ')}</td></tr>
+   <tr><td>Ma'rifah / nakirah</td><td>${A('الْكِتَابُ')} / ${A('كِتَابٌ')}</td></tr></table>
+   <p class="src">Pembagian mu'rab dan mabni dibaca di buku Bughyatu al-Murad dan Teori Dasar Nahwu dan Shorf sesuai RPS.</p>
+   <h3>Fi'il dan harf (Minggu 7)</h3>
+   <table class="map"><tr><th>Jenis</th><th>Contoh</th><th>Arti</th></tr>
+   <tr><td>Fi'il madhi</td><td>${A('كَتَبَ')}</td><td>telah menulis</td></tr>
+   <tr><td>Fi'il mudhari'</td><td>${A('يَكْتُبُ')}</td><td>sedang/akan menulis</td></tr>
+   <tr><td>Fi'il amr</td><td>${A('اُكْتُبْ')}</td><td>tulislah</td></tr>
+   <tr><td>Harf</td><td>${A('فِي، مِنْ، إِلَى، عَلَى')}</td><td>di, dari, ke, di atas</td></tr></table>
+   <h3>Kalimat sempurna</h3>
+   <div class="card">${A('ذَهَبَ أَحْمَدُ إِلَى الْمَدْرَسَةِ')} <span class="src">(Ahmad pergi ke sekolah)</span><br>${A('الْكِتَابُ جَدِيدٌ')} <span class="src">(buku itu baru)</span></div>
+   <h3>Golongkan kata</h3>
+   ${sent(301, 'K1', A('كِتَابٌ'), KALAM)}
+   ${sent(302, 'K2', A('كَتَبَ'), KALAM)}
+   ${sent(303, 'K3', A('فِي'), KALAM)}
+   ${sent(304, 'K4', A('الْمَدْرَسَةُ'), KALAM)}
+   ${sent(305, 'K5', A('يَذْهَبُ'), KALAM)}
+   ${sent(306, 'K6', A('مِنْ'), KALAM)}
+   ${sent(307, 'K7', A('طَالِبَانِ'), KALAM)}
+   ${sent(308, 'K8', A('اُكْتُبْ'), KALAM)}
+   <details><summary>Petunjuk pencocokan (buka setelah mencoba)</summary><p>K1 isim; K2 fi'il; K3 harf; K4 isim; K5 fi'il; K6 harf; K7 isim; K8 fi'il.</p></details>
+   ${AI_NOTE}${NOTE_BOOK('Ismail (2022), Bughyatu al-Murad; Haris (2017), Teori Dasar Nahwu dan Shorf; Ni\'mah (2009); Maemunah (2024)')}`},
+{ n:4, name:'Cermin Dhamir', ar:'ضَمِيرٌ', poster:'S4_CerminDhamir', q:'Dhamir atau isim isyarah apa yang tepat untuk orang atau benda ini?',
+  guide:'Cermin memantulkan siapa yang berbicara dan siapa yang dibicarakan. Di sini kamu belajar dhamir munfasil dan muttasil, isim isyarah, dan isim dhahir. Ganti lima isim dhahir dengan dhamir, tulis lima kalimat dengan isim isyarah, lalu bila mau, minta AI menjadi cermin koreksi yang hanya bertanya.',
+  board:['Pelajari dhamir munfasil dan muttasil.','Ganti lima isim dhahir dengan dhamir.','Tulis lima kalimat dengan isim isyarah; uji dengan cermin AI.'],
+  tasks:['Ganti lima isim dhahir dengan dhamir yang tepat (perhatikan mudzakkar/muannats dan jumlah).','Tulis lima kalimat memakai isim isyarah (hadza, hadzihi, dzalika, tilka).','Bila memakai cermin AI, tulis satu pertanyaan AI yang membuatmu merevisi, dan pernyataan penggunaan AI.'],
+  answers:[ans('t4_dhamir','Lima penggantian isim dhahir dengan dhamir',0,0),ans('t4_isyarah','Lima kalimat dengan isim isyarah beserta artinya',0,0),ans('t4_ai','Satu pertanyaan AI yang membuatmu merevisi, atau "tidak memakai AI"',0,0)],
+  bahan: () => `
+   <h3>Dhamir munfasil (Minggu 9)</h3>
+   <table class="map"><tr><th>Arab</th><th>Latin</th><th>Arti</th></tr>
+   <tr><td>${A('أَنَا')}</td><td>ana</td><td>aku</td></tr>
+   <tr><td>${A('نَحْنُ')}</td><td>nahnu</td><td>kami/kita</td></tr>
+   <tr><td>${A('أَنْتَ')} / ${A('أَنْتِ')}</td><td>anta / anti</td><td>kamu (laki-laki / perempuan)</td></tr>
+   <tr><td>${A('هُوَ')} / ${A('هِيَ')}</td><td>huwa / hiya</td><td>dia (laki-laki / perempuan)</td></tr>
+   <tr><td>${A('هُمْ')}</td><td>hum</td><td>mereka (laki-laki)</td></tr></table>
+   <h3>Dhamir muttasil (bersambung)</h3>
+   <table class="map"><tr><th>Arab</th><th>Arti</th></tr>
+   <tr><td>${A('كِتَابِي')}</td><td>bukuku</td></tr><tr><td>${A('كِتَابُكَ')}</td><td>bukumu (laki-laki)</td></tr>
+   <tr><td>${A('كِتَابُهُ')}</td><td>bukunya (laki-laki)</td></tr><tr><td>${A('كِتَابُهَا')}</td><td>bukunya (perempuan)</td></tr>
+   <tr><td>${A('كِتَابُنَا')}</td><td>buku kami</td></tr></table>
+   <h3>Isim isyarah dan isim dhahir (Minggu 10)</h3>
+   <table class="map"><tr><th>Arab</th><th>Arti</th></tr>
+   <tr><td>${A('هَذَا')} / ${A('هَذِهِ')}</td><td>ini (mudzakkar / muannats)</td></tr>
+   <tr><td>${A('ذَلِكَ')} / ${A('تِلْكَ')}</td><td>itu (mudzakkar / muannats)</td></tr></table>
+   <p>Isim dhahir adalah isim yang menyebut langsung orangnya atau bendanya, misalnya ${A('أَحْمَدُ')} atau ${A('الْمُعَلِّمَةُ')}, berbeda dengan dhamir yang menggantikannya.</p>
+   <div class="card">${A('هَذَا كِتَابٌ')} <span class="src">(ini sebuah buku)</span> · ${A('هَذِهِ مَدْرَسَةٌ')} <span class="src">(ini sebuah sekolah)</span> · ${A('أَحْمَدُ طَالِبٌ، هُوَ طَالِبٌ')} <span class="src">(Ahmad seorang pelajar, dia seorang pelajar)</span></div>
+   <h3>Cermin koreksi AI (opsional)</h3>
+   <p>AI di sini hanya boleh menunjukkan dan bertanya. Jangan biarkan ia menulis ulang kalimatmu. AI bisa keliru pada harakat dan jenis kata; keputusan akhir ada padamu, buku, dan dosen.</p>
+   <pre class="prompt" id="pc"></pre>
+   <div class="links"><button class="btn" id="pcCopy">Salin prompt cermin koreksi</button>${L('https://chatgpt.com','ChatGPT')}${L('https://claude.ai','Claude')}${L('https://gemini.google.com','Gemini')}</div>
+   ${AI_NOTE}${NOTE_BOOK('Ismail (2022), Bughyatu al-Murad; Haris (2017); Hamid dkk. (2025), Buku 1 dan 2')}`},
+{ n:5, name:'Panggung Lagu Mufradat', ar:'أُغْنِيَةٌ', poster:'S5_PanggungLagu', q:'Lagu apa yang membuat anak MI mudah mengingat sepuluh kosakata Arab?',
+  guide:'Panggung ini untuk proyek UTS sampai UAS: Arabic Fun Song for MI. Pilih satu tema yang sudah kamu pelajari, kumpulkan 10 sampai 15 mufradat, rancang lirik pendek, lalu siapkan prototype. Pada UAS prototype disempurnakan menjadi produk final dengan panduan penggunaan dan simulasi di kelas MI. AI hanya boleh membantu mencari ide gerakan, bukan menulis liriknya.',
+  board:['Pilih tema dan 10–15 mufradat.','Rancang lirik pendek dan gerakan.','Siapkan proposal dan prototype (UTS).'],
+  tasks:['Pilih tema dan tulis 10–15 mufradat beserta artinya.','Tulis rancangan lirik 4–8 baris dan satu aktivitas gerak untuk anak MI.','Bila memakai asisten ide AI, tulis pernyataan penggunaan AI dan cara kamu memeriksa makna dan harakat.'],
+  answers:[ans('t5_mufradat','Tema dan daftar 10–15 mufradat beserta artinya',0,0),ans('t5_lirik','Rancangan lirik 4–8 baris dan satu aktivitas gerak',0,0),ans('t5_ai','Pernyataan penggunaan AI dan cara memeriksa, atau "tidak memakai AI"',0,0)],
+  bahan: () => `
+   <h3>Proyek berkelanjutan UTS–UAS</h3>
+   <table class="map"><tr><th>Tahap</th><th>Minggu</th><th>Tagihan menurut RPS</th><th>Bobot</th></tr>
+   <tr><td>Prototype</td><td>8 (UTS)</td><td>Proposal, lirik, daftar mufradat, audio/video prototype, lembar feedback</td><td>15%</td></tr>
+   <tr><td>Produk final</td><td>16 (UAS)</td><td>Produk final, panduan penggunaan, video/audio, bukti simulasi di kelas MI</td><td>20%</td></tr></table>
+   <h3>Rubrik R9 (lima kriteria)</h3>
+   <table class="map"><tr><th>Kriteria</th><th>Bobot</th></tr>
+   <tr><td>Ketepatan mufradat, makna, dan struktur (10–15 kata)</td><td>25%</td></tr>
+   <tr><td>Pelafalan dan keterampilan berbahasa</td><td>20%</td></tr>
+   <tr><td>Kesesuaian dengan karakteristik anak MI</td><td>20%</td></tr>
+   <tr><td>Kreativitas dan daya tarik media</td><td>15%</td></tr>
+   <tr><td>Integrasi empat maharah dan kelayakan pembelajaran</td><td>20%</td></tr></table>
+   <h3>Pola lirik sederhana (kerangka, bukan lagu jadi)</h3>
+   <div class="card">${A('[kata] ... هَذَا [kata]')} · ${A('[kata] ... هَذِهِ [kata]')}<br><span class="src">Ulangi pola, ganti kata benda dan warna yang sudah dipelajari. Gunakan melodi buatanmu sendiri atau melodi bebas hak cipta.</span></div>
+   <h3>Memeriksa mufradat</h3>
+   <p>Cek setiap kata di Kamus al-Munawwir (Munawwir, 2017) atau buku Al-Arabiyyatu lil Hayah, termasuk harakat dan jenis mudzakkar/muannats. Jangan memakai kata yang belum kamu pastikan maknanya.</p>
+   <h3>Asisten ide AI (opsional)</h3>
+   <p>Prompt berikut hanya meminta ide gerakan dan pola pengulangan, tidak meminta lirik. Lirik dan mufradat tetap kamu tulis sendiri.</p>
+   <pre class="prompt" id="pj"></pre>
+   <div class="links"><button class="btn" id="pjCopy">Salin prompt asisten ide</button>${L('https://chatgpt.com','ChatGPT')}${L('https://claude.ai','Claude')}${L('https://gemini.google.com','Gemini')}</div>
+   ${AI_NOTE}${NOTE_BOOK('RPS Bahasa Arab (Minggu 8 dan 16); Munawwir (2017)')}`},
+{ n:6, name:'Bale Istima\' dan Qira\'ah', ar:'قِرَاءَةٌ', poster:'S6_BaleIstimaQiraah', q:'Apa ide pokok teks pendek ini, dan kosakata apa yang membantumu memahaminya?',
+  guide:'Di bale berbentuk segi delapan ini kamu berlatih menyimak, membaca, dan berbicara. Dengarkan atau baca teks latihan tentang Khalid, jawab tiga pertanyaan, lalu rekam dialog tentang keluarga atau lingkungan bersama pasanganmu.',
+  board:['Dengarkan lalu baca teks latihan.','Jawab tiga pertanyaan dan temukan ide pokok.','Rekam dialog keluarga atau lingkungan (role-play).'],
+  tasks:['Baca teks latihan, tulis ide pokoknya dan tiga kosakata baru beserta artinya.','Jawab tiga pertanyaan pemahaman.','Tulis dialog pendek tentang keluarga atau lingkungan dan rekam bersama pasanganmu (Minggu 12).'],
+  answers:[ans('t6_ide','Ide pokok dan tiga kosakata baru beserta artinya',0,0),ans('t6_jawab','Jawaban tiga pertanyaan pemahaman',0,0),ans('t6_dialog','Dialog 6 baris tentang keluarga atau lingkungan, beserta artinya',0,0)],
+  bahan: () => `
+   <h3>Strategi istima' (Minggu 11)</h3>
+   <ol class="tasks"><li>Dengarkan keseluruhan dulu tanpa melihat teks.</li><li>Tangkap kosakata yang kamu kenal.</li><li>Jawab pertanyaan, lalu cocokkan dengan teks.</li></ol>
+   <h3>Strategi qira'ah (Minggu 13)</h3>
+   <ol class="tasks"><li>Baca per kata dengan harakat, mulai dari kanan.</li><li>Garis bawahi kosakata yang belum kamu ketahui.</li><li>Tentukan ide pokok dalam satu kalimat.</li></ol>
+   <h3>Teks latihan: Khalid dan desanya (rekaan)</h3>
+   <div class="card" style="font-size:20px">${A('هَذَا خَالِدٌ. خَالِدٌ طَالِبٌ فِي الْمَدْرَسَةِ. هُوَ يَسْكُنُ فِي قَرْيَةٍ. فِي قَرْيَتِهِ مَسْجِدٌ جَمِيلٌ وَمَدْرَسَةٌ كَبِيرَةٌ.')}</div>
+   <div class="links">${SAY('هَذَا خَالِدٌ. خَالِدٌ طَالِبٌ فِي الْمَدْرَسَةِ. هُوَ يَسْكُنُ فِي قَرْيَةٍ. فِي قَرْيَتِهِ مَسْجِدٌ جَمِيلٌ وَمَدْرَسَةٌ كَبِيرَةٌ.', '🔊 Dengarkan teks')}</div>
+   <p class="src">Teks ini rekaan sebagai latihan, bukan teks dari buku. Suara memakai pembaca teks bawaan perangkat.</p>
+   <h3>Pertanyaan pemahaman</h3>
+   <ol class="tasks"><li>Siapa tokoh dalam teks, dan apa kegiatannya?</li><li>Di mana ia tinggal?</li><li>Apa saja yang ada di desanya?</li></ol>
+   <details><summary>Petunjuk jawaban (buka setelah mencoba)</summary><p>Tokohnya Khalid, seorang pelajar di sebuah sekolah. Ia tinggal di sebuah desa. Di desanya ada masjid yang indah dan sekolah yang besar.</p></details>
+   <h3>Kalam: dialog keluarga dan lingkungan (Minggu 12)</h3>
+   <div class="card">${A('مَنْ هَذَا؟')} <span class="src">(siapa ini?)</span> · ${A('هَذَا أَخِي.')} <span class="src">(ini kakak/adikku, laki-laki)</span> · ${A('هَذِهِ أُمِّي.')} <span class="src">(ini ibuku)</span> · ${A('أَيْنَ بَيْتُكَ؟')} <span class="src">(di mana rumahmu?)</span> · ${A('بَيْتِي قَرِيبٌ مِنَ الْمَدْرَسَةِ.')} <span class="src">(rumahku dekat dari sekolah)</span></div>
+   ${AI_NOTE}${NOTE_BOOK('Hamid dkk. (2025), Buku 1 dan 2; Mansur (2016)')}`},
+{ n:7, name:'Serambi Kitabah dan Integrasi', ar:'كِتَابَةٌ', poster:'S7_SerambiAkhir', q:'Apakah kamu kini bisa menulis dan mengintegrasikan empat maharah dalam komunikasi sederhana?',
+  guide:'Di serambi terakhir kamu menulis teks bahasa Arab sederhana, lalu mengintegrasikan istima\', kalam, qira\'ah, dan kitabah. Kerjakan PASCA tanpa bantuan AI, tulis pernyataan penggunaan AI bila kamu memakainya di titik lain, lalu bandingkan dengan PRA-mu.',
+  board:['Tulis teks Arab 4–6 kalimat (PASCA, tanpa AI).','Rancang satu aktivitas MI yang memadukan empat maharah.','Isi pernyataan penggunaan AI dan refleksi.'],
+  tasks:['PASCA (tanpa AI): tulis teks Arab 4–6 kalimat tentang dirimu, keluargamu, atau kegiatan sehari-hari, beserta artinya.','Rancang satu aktivitas MI yang memadukan istima\', kalam, qira\'ah, dan kitabah (tiga langkah).','Tulis pernyataan penggunaan AI dan refleksi 3–5 kalimat dengan membandingkan PRA dan PASCA-mu.'],
+  answers:[ans('pasca_teks','PASCA (tanpa AI): teks Arab 4–6 kalimat beserta artinya',0,0),ans('pasca_aktivitas','Aktivitas MI yang memadukan empat maharah (tiga langkah)',0,0),ans('pasca_ai','Pernyataan penggunaan AI',0,0),ans('pasca_refleksi','Refleksi: perbandingan PRA dan PASCA-mu',0,0)],
+  bahan: () => `
+   <h3>Kitabah (Minggu 14)</h3>
+   <p>Tulis dari kanan ke kiri, perhatikan bentuk huruf di awal, tengah, dan akhir kata, serta harakat bila dibutuhkan. Mulai dari kata, lalu kalimat, lalu teks pendek.</p>
+   <div class="card">${A('اسْمِي ... أَنَا طَالِبَةٌ فِي الْجَامِعَةِ. بَيْتِي فِي ... أَنَا أَدْرُسُ اللُّغَةَ الْعَرَبِيَّةَ.')}<br><span class="src">Pola contoh (isi titik-titik dengan datamu): namaku..., aku mahasiswi di universitas; rumahku di...; aku belajar bahasa Arab. Untuk penulis laki-laki, ${A('طَالِبٌ')}.</span></div>
+   <h3>Integrasi empat maharah (Minggu 15)</h3>
+   <ol class="tasks"><li>Istima': anak mendengarkan kosakata atau dialog.</li><li>Kalam: anak menirukan dan berdialog berpasangan.</li><li>Qira'ah dan kitabah: anak membaca kartu kata lalu menulis satu kalimat.</li></ol>
+   <h3>Pernyataan penggunaan AI</h3>
+   <div class="card" id="disc">${DISCLOSURE}</div><div class="links"><button class="btn alt" id="discCopy">Salin templat</button></div>
+   <h3>Daftar periksa</h3>
+   <div class="card">
+    <label><input type="checkbox">Aku menulis dari kanan ke kiri dengan bentuk huruf yang benar.</label>
+    <label><input type="checkbox">Kosakataku sudah kucek di kamus atau buku.</label>
+    <label><input type="checkbox">Kalimatku memiliki isim dan fi'il atau harf yang tepat.</label>
+    <label><input type="checkbox">Dhamir dan isim isyarahku sesuai jenis dan jumlahnya.</label>
+    <label><input type="checkbox">Aku menyatakan bagian yang dibantu AI.</label>
+    <label><input type="checkbox">Aktivitas MI-ku memadukan empat maharah.</label>
+   </div>
+   <div class="links"><button class="btn" id="allCopy2">Salin semua jawabanku</button></div>
+   <p class="note">PRA dan PASCA dinilai dengan rubrik enam aspek (0–2). Hasil di sini adalah latihan formatif, bukan nilai akhir mata kuliah.</p>
+   ${AI_NOTE}`}
+];
+
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from './GLTFLoader.js';
+import { Reflector } from './Reflector.js';
+import { mergeGeometries } from './BufferGeometryUtils.js';
+
+const S = window.PQ_STATIONS, CFG = window.PQ_CONFIG;
+const $ = s => document.querySelector(s);
+const isTouch = matchMedia('(pointer:coarse)').matches;
+const EYE = 1.6;
+const store = { get(k, d){ try{ const v = localStorage.getItem('pq.'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+                set(k, v){ try{ localStorage.setItem('pq.'+k, JSON.stringify(v)); }catch(e){} } };
+
+/* ---------- renderer, scene ---------- */
+const host = $('#scene');
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, isTouch ? 1.5 : 1.75));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+host.appendChild(renderer.domElement); renderer.domElement.style.cursor = 'grab';
+const scene = new THREE.Scene();
+const HORIZON = new THREE.Color('#EADFC8');
+scene.fog = new THREE.Fog(HORIZON, 38, 105);
+const rig = new THREE.Group(); scene.add(rig);
+const camera = new THREE.PerspectiveCamera(isTouch ? 72 : 62, innerWidth / innerHeight, 0.05, 260);
+camera.position.y = EYE; rig.add(camera);
+
+// sky
+{
+  const g = new THREE.SphereGeometry(200, 32, 16);
+  const m = new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, fog: false,
+    uniforms: { top: { value: new THREE.Color('#8FB7CF') }, hor: { value: HORIZON }, gnd: { value: new THREE.Color('#9C9273') } },
+    vertexShader: 'varying vec3 vp; void main(){ vp = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+    fragmentShader: 'uniform vec3 top; uniform vec3 hor; uniform vec3 gnd; varying vec3 vp; void main(){ float h = vp.y; vec3 c = h>0.0 ? mix(hor, top, pow(min(h*1.6,1.0),0.8)) : mix(hor, gnd, min(-h*4.0,1.0)); gl_FragColor = vec4(c,1.0); }' });
+  scene.add(new THREE.Mesh(g, m));
+}
+scene.add(new THREE.HemisphereLight('#FFF4E0', '#6B5A3A', 1.55));
+const sun = new THREE.DirectionalLight('#FFE2B8', 2.1); sun.position.set(-22, 34, 18); scene.add(sun);
+
+/* ---------- loading ---------- */
+const manager = new THREE.LoadingManager();
+let mgrDone = false, mgrWait = null;
+manager.onProgress = (u, a, b) => { $('#lbar').style.width = Math.round(a / b * 100) + '%'; mgrDone = a >= b; };
+manager.onLoad = () => { mgrDone = true; if (mgrWait) mgrWait(); };
+const texLoader = new THREE.TextureLoader(manager);
+const maxAniso = renderer.capabilities.getMaxAnisotropy();
+function tex(path, rx = 1, ry = 1) {
+  const t = texLoader.load(path); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(rx, ry); t.anisotropy = Math.min(8, maxAniso); return t;
+}
+function canvasTex(cv, rx = 1, ry = 1) {
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(rx, ry); t.anisotropy = Math.min(8, maxAniso); return t;
+}
+if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h) { this.rect(x, y, w, h); };
+function mkCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
+function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+
+// procedural textures
+function brickCanvas() {
+  const [c, x] = mkCanvas(256, 128); const r = rnd(7);
+  x.fillStyle = '#d9c3a4'; x.fillRect(0, 0, 256, 128);
+  for (let row = 0; row < 8; row++) for (let col = -1; col < 9; col++) {
+    const off = row % 2 ? 16 : 0, v = 0.82 + r() * 0.3;
+    x.fillStyle = `rgb(${Math.round(160 * v)},${Math.round(76 * v)},${Math.round(52 * v)})`;
+    x.fillRect(col * 32 + off + 1, row * 16 + 1, 30, 14);
+  }
+  return c;
+}
+function grassCanvas() {
+  const [c, x] = mkCanvas(256, 256); const r = rnd(3);
+  x.fillStyle = '#6E8B4E'; x.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 2600; i++) { const v = r(); x.fillStyle = v > .5 ? 'rgba(52,84,40,.35)' : 'rgba(150,170,96,.30)'; x.fillRect(r() * 256, r() * 256, 2 + r() * 3, 2 + r() * 5); }
+  return c;
+}
+function blobCanvas() {
+  const [c, x] = mkCanvas(128, 128); const g = x.createRadialGradient(64, 64, 8, 64, 64, 64);
+  g.addColorStop(0, 'rgba(0,0,0,.42)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); return c;
+}
+
+/* ---------- materials ---------- */
+const T = {
+  wood: tex('wood.webp'), woodL: tex('wood_l.webp'), genteng: tex('genteng.webp', 3, 3),
+  tegel: tex('tegel.webp', 3, 3), batu: tex('batu.webp', 2, 2), batuD: tex('batu_d.webp', 1, 1),
+  brick: canvasTex(brickCanvas(), 1, 1), grass: canvasTex(grassCanvas(), 60, 60), blob: canvasTex(blobCanvas())
+};
+const M = {
+  wood: new THREE.MeshStandardMaterial({ map: T.wood, roughness: .75 }),
+  woodL: new THREE.MeshStandardMaterial({ map: T.woodL, roughness: .8 }),
+  roof: new THREE.MeshStandardMaterial({ map: T.genteng, roughness: .85, side: THREE.DoubleSide }),
+  roofQala: new THREE.MeshStandardMaterial({ map: T.genteng, color: '#7FC0B4', roughness: .85, side: THREE.DoubleSide }),
+  roofQultu: new THREE.MeshStandardMaterial({ map: T.genteng, color: '#F0B860', roughness: .85, side: THREE.DoubleSide }),
+  tegel: new THREE.MeshStandardMaterial({ map: T.tegel, roughness: .7 }),
+  batu: new THREE.MeshStandardMaterial({ map: T.batu, roughness: .95 }),
+  batuD: new THREE.MeshStandardMaterial({ map: T.batuD, roughness: .9 }),
+  brick: new THREE.MeshStandardMaterial({ map: T.brick, roughness: .92 }),
+  plaster: new THREE.MeshStandardMaterial({ color: '#EFE3CC', roughness: .95 }),
+  gold: new THREE.MeshStandardMaterial({ color: '#D7AE52', emissive: '#5a3c06', emissiveIntensity: .6, metalness: .35, roughness: .4 }),
+  qala: new THREE.MeshStandardMaterial({ color: '#3F7F76', roughness: .8 }),
+  qultu: new THREE.MeshStandardMaterial({ color: '#C47A22', roughness: .75 }),
+  cloth: new THREE.MeshStandardMaterial({ color: '#7A2E2A', roughness: .95 }),
+  leaf: new THREE.MeshStandardMaterial({ color: '#3B6B40', roughness: .9, flatShading: true }),
+  leaf2: new THREE.MeshStandardMaterial({ color: '#4F7F45', roughness: .9, flatShading: true }),
+  lamp: new THREE.MeshStandardMaterial({ color: '#FFE3A1', emissive: '#FFB84D', emissiveIntensity: 1.4 }),
+  blob: new THREE.MeshBasicMaterial({ map: T.blob, transparent: true, depthWrite: false })
+};
+const BOX = new THREE.BoxGeometry(1, 1, 1), CYL = new THREE.CylinderGeometry(.5, .5, 1, 14);
+function box(parent, mat, x, y, z, w, h, d, ry = 0) { const m = new THREE.Mesh(BOX, mat); m.position.set(x, y, z); m.scale.set(w, h, d); m.rotation.y = ry; parent.add(m); return m; }
+function cyl(parent, mat, x, y, z, r, h) { const m = new THREE.Mesh(CYL, mat); m.position.set(x, y, z); m.scale.set(r * 2, h, r * 2); parent.add(m); return m; }
+function blob(parent, x, z, sx, sz) { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), M.blob); m.rotation.x = -Math.PI / 2; m.position.set(x, .02, z); m.scale.set(sx, sz, 1); m.renderOrder = 1; parent.add(m); }
+
+/* ---------- ground, path, wall ---------- */
+const WALL_R = 23, RING_R = 13.2;
+{
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(120, 48), new THREE.MeshStandardMaterial({ map: T.grass, roughness: 1 }));
+  ground.rotation.x = -Math.PI / 2; scene.add(ground);
+  const pt = tex('batu.webp', 1, 1); pt.repeat.set(40, 2);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(RING_R - 2, RING_R + 2, 96, 1), new THREE.MeshStandardMaterial({ map: pt, roughness: .95, color: '#E9E1D2' }));
+  // UV ring: map angle to u
+  const uv = ring.geometry.attributes.uv, pos = ring.geometry.attributes.position;
+  for (let i = 0; i < uv.count; i++) { const x = pos.getX(i), y = pos.getY(i); uv.setXY(i, (Math.atan2(y, x) / (2 * Math.PI) + .5), (Math.hypot(x, y) - (RING_R - 2)) / 4); }
+  ring.rotation.x = -Math.PI / 2; ring.position.y = .015; scene.add(ring);
+  const pt2 = tex('batu.webp', 2, 9);
+  const lane = new THREE.Mesh(new THREE.PlaneGeometry(4, 26), new THREE.MeshStandardMaterial({ map: pt2, roughness: .95, color: '#E9E1D2' }));
+  lane.rotation.x = -Math.PI / 2; lane.position.set(0, .016, 15 + 13); scene.add(lane);
+  const pt3 = tex('batu.webp', 2, 3);
+  const lane2 = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 6), new THREE.MeshStandardMaterial({ map: pt3, roughness: .95, color: '#E9E1D2' }));
+  lane2.rotation.x = -Math.PI / 2; lane2.position.set(0, .017, 7.6); scene.add(lane2);
+  // brick wall with a gap at the gate
+  const gap = 0.16;
+  const wt = canvasTex(brickCanvas(), 70, 1);
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(WALL_R, WALL_R, 1.25, 120, 1, true, gap, Math.PI * 2 - 2 * gap),
+    new THREE.MeshStandardMaterial({ map: wt, roughness: .92, side: THREE.DoubleSide }));
+  wall.position.y = .625; scene.add(wall);
+  const cap = new THREE.Mesh(new THREE.TorusGeometry(WALL_R, .16, 4, 120, Math.PI * 2 - 2 * gap), M.plaster);
+  cap.rotation.x = Math.PI / 2; cap.rotation.z = Math.PI / 2 + gap; cap.position.y = 1.27; scene.add(cap);
+}
+
+/* ---------- trees ---------- */
+{
+  const r = rnd(11), pts = [];
+  for (let i = 0; i < 46; i++) {
+    const a = r() * Math.PI * 2, d = 27 + r() * 22, x = Math.sin(a) * d, z = Math.cos(a) * d;
+    if (z > 18 && Math.abs(x) < 9) continue; pts.push([x, z, .8 + r() * .7]);
+  }
+  [[-8, -19, 1], [9, -18.5, .9], [-19.5, 2, .85], [19.5, 1, .95], [-7, 19.5, .8], [8, 19.8, .8]].forEach(p => pts.push(p));
+  const trunk = new THREE.InstancedMesh(new THREE.CylinderGeometry(.18, .28, 3, 7), M.wood, pts.length);
+  const crown = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(2.2, 0), M.leaf, pts.length);
+  const crown2 = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.6, 0), M.leaf2, pts.length);
+  const o = new THREE.Object3D();
+  pts.forEach(([x, z, s], i) => {
+    o.position.set(x, 1.5 * s, z); o.scale.set(s, s, s); o.rotation.set(0, i, 0); o.updateMatrix(); trunk.setMatrixAt(i, o.matrix);
+    o.position.set(x, 4.1 * s, z); o.scale.set(s * 1.1, s * .9, s * 1.1); o.updateMatrix(); crown.setMatrixAt(i, o.matrix);
+    o.position.set(x + .6 * s, 5.2 * s, z - .3 * s); o.scale.set(s, s, s); o.updateMatrix(); crown2.setMatrixAt(i, o.matrix);
+  });
+  scene.add(trunk, crown, crown2);
+  pts.forEach(([x, z, s]) => blob(scene, x, z, 5 * s, 5 * s));
+}
+
+/* ---------- text canvases ---------- */
+function wrap(x, text, maxW) { const words = text.split(' '), lines = []; let l = ''; for (const w of words) { const t = l ? l + ' ' + w : w; if (x.measureText(t).width > maxW && l) { lines.push(l); l = w; } else l = t; } if (l) lines.push(l); return lines; }
+function boardCanvas(s) {
+  const W = 600, H = 800, [c, x] = mkCanvas(W, H);
+  x.fillStyle = '#F7F0E3'; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#1F3D2B'; x.fillRect(0, 0, W, 132);
+  x.fillStyle = '#B8893B'; x.fillRect(0, 132, W, 10);
+  x.strokeStyle = '#B8893B'; x.lineWidth = 4; x.beginPath(); x.arc(70, 66, 40, 0, 7); x.stroke();
+  x.fillStyle = '#F4ECDD'; x.font = '700 44px Lora, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(s.n), 70, 68);
+  x.textAlign = 'left'; x.font = '600 18px Poppins, sans-serif'; x.fillStyle = '#D9C29A'; x.fillText('PAPAN TUGAS · TITIK ' + s.n, 130, 44);
+  x.font = '700 36px Lora, serif'; x.fillStyle = '#F4ECDD'; x.fillText(s.name, 130, 90);
+  x.textBaseline = 'alphabetic'; x.font = 'italic 400 27px Lora, serif'; x.fillStyle = '#6B4423';
+  let y = 200; wrap(x, s.q, W - 90).forEach(l => { x.fillText(l, 50, y); y += 36; });
+  x.fillStyle = '#B8893B'; x.fillRect(30, 172, 7, y - 196);
+  y += 26; x.font = '600 20px Poppins, sans-serif'; x.fillStyle = '#1F3D2B'; x.fillText('TUGASMU', 40, y); y += 38;
+  s.board.forEach((t, i) => {
+    x.fillStyle = '#1F3D2B'; x.beginPath(); x.arc(58, y - 9, 17, 0, 7); x.fill();
+    x.fillStyle = '#F4ECDD'; x.font = '600 19px Poppins, sans-serif'; x.textAlign = 'center'; x.fillText(String(i + 1), 58, y - 2); x.textAlign = 'left';
+    x.fillStyle = '#2B1D12'; x.font = '400 24px Poppins, sans-serif';
+    wrap(x, t, W - 140).forEach(l => { x.fillText(l, 90, y); y += 32; }); y += 14;
+  });
+  x.fillStyle = '#EFE3CC'; x.fillRect(0, H - 92, W, 92); x.fillStyle = '#B8893B'; x.fillRect(0, H - 92, W, 4);
+  x.fillStyle = '#1F3D2B'; x.font = '600 22px Poppins, sans-serif'; x.textAlign = 'center';
+  x.fillText('Ketuk papan ini untuk membuka', W / 2, H - 52); x.fillText('bahan, video, dan formulir', W / 2, H - 22);
+  return c;
+}
+function medalCanvas(n, name) {
+  const W = 512, H = 300, [c, x] = mkCanvas(W, H);
+  x.fillStyle = 'rgba(31,61,43,.92)'; const r = 26; x.beginPath(); x.roundRect(6, 150, W - 12, 120, r); x.fill();
+  x.fillStyle = '#1F3D2B'; x.beginPath(); x.arc(W / 2, 92, 82, 0, 7); x.fill();
+  x.lineWidth = 10; x.strokeStyle = '#D7AE52'; x.stroke();
+  x.fillStyle = '#F4ECDD'; x.font = '700 96px Lora, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), W / 2, 98);
+  x.font = '700 50px Lora, serif'; x.fillText(name, W / 2, 222, W - 40);
+  return c;
+}
+function labelCanvas(t1, t2, col = '#1F3D2B') {
+  const W = 512, H = 170, [c, x] = mkCanvas(W, H);
+  x.fillStyle = col; x.beginPath(); x.roundRect(4, 4, W - 8, H - 8, 24); x.fill();
+  x.strokeStyle = '#D7AE52'; x.lineWidth = 6; x.stroke();
+  x.fillStyle = '#F4ECDD'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.font = '600 34px Poppins, sans-serif'; x.fillText(t1, W / 2, 56, W - 30);
+  x.font = '700 46px Lora, serif'; x.fillStyle = '#F2D38B'; x.fillText(t2, W / 2, 116, W - 30);
+  return c;
+}
+function arabicCanvas(t, bg = '#1F3D2B') {
+  const W = 512, H = 200, [c, x] = mkCanvas(W, H);
+  x.fillStyle = bg; x.beginPath(); x.roundRect(4, 4, W - 8, H - 8, 20); x.fill();
+  x.strokeStyle = '#D7AE52'; x.lineWidth = 8; x.stroke();
+  x.fillStyle = '#F2D38B'; x.font = '700 104px Amiri, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.direction = 'rtl'; x.fillText(t, W / 2, 96, W - 40);
+  return c;
+}
+function sprite(cv, w) {
+  const m = new THREE.SpriteMaterial({ map: canvasTex(cv), depthWrite: false, fog: false });
+  const s = new THREE.Sprite(m); s.scale.set(w, w * cv.height / cv.width, 1); return s;
+}
+
+/* ---------- station layout ---------- */
+const hotspots = [];
+const deg = d => d * Math.PI / 180;
+const ANG = [null, null, -55, -105, -155, 155, 105, 55].map(a => a == null ? null : deg(a));
+const POST_R = 16.4, STRUCT_R = 19.4;
+// each station: anchor (centre between stands), facing (yaw the viewer should have), span (half width of content)
+const ST = S.map((s, n) => {
+  if (n === 0) return { a: new THREE.Vector3(0, 0, 25.6), face: new THREE.Vector3(0, 0, -1), span: 4.6 };
+  if (n === 1) return { a: new THREE.Vector3(0, 0, 8.6), face: new THREE.Vector3(0, 0, -1), span: 4.0 };
+  const a = ANG[n]; const dir = new THREE.Vector3(Math.sin(a), 0, Math.cos(a));
+  return { a: dir.clone().multiplyScalar(POST_R), face: dir.clone(), span: 3.4, dir, ang: a };
+});
+
+function standFrame(group, w, h) {
+  // posts + small gable roof, centred at origin, board facing +z
+  const bottom = .78, top = bottom + h;
+  cyl(group, M.wood, -w / 2 - .12, top / 2 + .2, -.06, .07, top + .4);
+  cyl(group, M.wood, w / 2 + .12, top / 2 + .2, -.06, .07, top + .4);
+  box(group, M.wood, 0, (bottom + top) / 2, -.07, w + .14, h + .14, .08);
+  const r1 = box(group, M.roof, -w / 4 - .08, top + .42, -.06, w / 2 + .5, .06, .7); r1.rotation.z = .42;
+  const r2 = box(group, M.roof, w / 4 + .08, top + .42, -.06, w / 2 + .5, .06, .7); r2.rotation.z = -.42;
+  box(group, M.gold, 0, top + .62, -.06, .16, .16, .16);
+  blob(group, 0, -.06, w + 1.2, 1.6);
+  return { bottom, top };
+}
+function posterStand(file, action) {
+  const g = new THREE.Group(), w = 1.5, h = 2.0; const { bottom } = standFrame(g, w, h);
+  const t = tex('' + file + '.webp');
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: t, toneMapped: false }));
+  m.position.set(0, bottom + h / 2, -.02); m.userData.action = action; g.add(m); hotspots.push(m); return g;
+}
+function boardStand(s) {
+  const g = new THREE.Group(), w = 1.5, h = 2.0; const { bottom } = standFrame(g, w, h);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: canvasTex(boardCanvas(s)), toneMapped: false }));
+  m.position.set(0, bottom + h / 2, -.02); m.userData.action = { type: 'panel', n: s.n, tab: 'tugas' }; g.add(m); hotspots.push(m); return g;
+}
+function place(obj, pos, faceDir) { obj.position.copy(pos); obj.rotation.y = Math.atan2(-faceDir.x, -faceDir.z) + Math.PI; scene.add(obj); return obj; }
+
+/* pavilions */
+function roofTiers(g, w, d, y, mat, h1 = 1.0, h2 = 1.4) {
+  const R = Math.SQRT2, sx = w / 2 + .7, sz = d / 2 + .7;
+  const lowG = new THREE.Group(); const low = new THREE.Mesh(new THREE.CylinderGeometry(.42 * R, R, h1, 4, 1, true), mat);
+  low.rotation.y = Math.PI / 4; low.position.y = y + h1 / 2; lowG.add(low); lowG.scale.set(sx, 1, sz); g.add(lowG);
+  const upG = new THREE.Group(); const up = new THREE.Mesh(new THREE.ConeGeometry(.5 * R, h2, 4, 1, true), mat);
+  up.rotation.y = Math.PI / 4; up.position.y = y + h1 + .28 + h2 / 2; upG.add(up); upG.scale.set(sx, 1, sz); g.add(upG);
+  box(g, M.wood, 0, y + h1 + .14, 0, sx * .84, .28, sz * .84);
+  box(g, M.gold, 0, y + h1 + .02, 0, sx * .86, .05, sz * .86);
+  box(g, M.gold, 0, y + h1 + h2 + .36, 0, .22, .3, .22);
+}
+function pavilion({ w, d, h = 2.7, roof = M.roof, floor = M.tegel, plat = .35 }) {
+  const g = new THREE.Group();
+  box(g, M.batu, 0, plat / 2, 0, w + .5, plat, d + .5);
+  const fl = new THREE.Mesh(new THREE.PlaneGeometry(w + .3, d + .3), floor); fl.rotation.x = -Math.PI / 2; fl.position.y = plat + .005; g.add(fl);
+  const xs = [-w / 2, w / 2], zs = [-d / 2, d / 2];
+  const nx = Math.max(2, Math.round(w / 2.4) + 1);
+  for (let i = 0; i < nx; i++) { const x = -w / 2 + i * w / (nx - 1); zs.forEach(z => { cyl(g, M.wood, x, plat + h / 2, z, .1, h); box(g, M.batuD, x, plat + .08, z, .3, .16, .3); }); }
+  xs.forEach(x => box(g, M.wood, x, plat + h, 0, .16, .2, d + .2));
+  zs.forEach(z => box(g, M.wood, 0, plat + h, z, w + .2, .2, .16));
+  roofTiers(g, w, d, plat + h + .1, roof);
+  blob(g, 0, 0, w + 3, d + 3);
+  g.userData.plat = plat;
+  return g;
+}
+
+/* ---------- build scene content ---------- */
+const labelSprites = [];
+function stationLabel(n, pos) { const sp = sprite(medalCanvas(n, S[n].name), 1.9); sp.position.copy(pos); sp.userData.action = { type: 'panel', n }; scene.add(sp); hotspots.push(sp); labelSprites.push(sp); return sp; }
+function floorRing(n, pos) {
+  const g = new THREE.Mesh(new THREE.RingGeometry(.55, .78, 40), new THREE.MeshBasicMaterial({ color: '#D7AE52', transparent: true, opacity: .9, side: THREE.DoubleSide }));
+  g.rotation.x = -Math.PI / 2; g.position.set(pos.x, .03, pos.z); g.userData.action = { type: 'go', n }; scene.add(g); hotspots.push(g);
+  const d = new THREE.Mesh(new THREE.CircleGeometry(.55, 30), new THREE.MeshBasicMaterial({ color: '#1F3D2B', transparent: true, opacity: .55 }));
+  d.rotation.x = -Math.PI / 2; d.position.set(pos.x, .025, pos.z); d.userData.action = { type: 'go', n }; scene.add(d); hotspots.push(d);
+  return g;
+}
+const rings = [];
+const heightZones = []; // {x,z,hw,hd,ang,h}
+
+function buildStations() {
+  S.forEach((s, n) => {
+    const st = ST[n]; const f = st.face; const right = new THREE.Vector3(-f.z, 0, f.x); // viewer's right when facing -f? compute below
+    // viewer stands at a - f*d facing +f ... our face vector points from viewer toward content
+    const vr = new THREE.Vector3(-f.z, 0, f.x); // right-hand of a viewer looking along f
+    const toViewer = f.clone().negate();
+    if (n === 1) {
+      place(boardStand(s), st.a.clone().addScaledVector(vr, -3.1), toViewer);
+      place(posterStand(s.poster, { type: 'panel', n, tab: 'pandu' }), st.a.clone(), toViewer);
+      place(posterStand(s.poster2, { type: 'ar' }), st.a.clone().addScaledVector(vr, 3.1), toViewer);
+    } else {
+      const half = n === 0 ? 3.3 : 1.85;
+      place(posterStand(s.poster, { type: 'panel', n, tab: 'pandu' }), st.a.clone().addScaledVector(vr, -half), toViewer);
+      place(boardStand(s), st.a.clone().addScaledVector(vr, half), toViewer);
+    }
+    stationLabel(n, st.a.clone().add(new THREE.Vector3(0, n === 1 ? 4.0 : 3.75, 0)).addScaledVector(f, n === 1 ? -.4 : .25));
+    const ringPos = st.a.clone().addScaledVector(toViewer, 3.4); rings[n] = floorRing(n, ringPos);
+  });
+}
+
+function buildGate() {
+  const g = new THREE.Group();
+  const tower = (sx) => {
+    const t = new THREE.Group(); const tiers = [[2.3, 1.7, 1.3], [2.0, 1.5, 1.4], [1.7, 1.3, 1.2], [1.35, 1.05, .9], [1.0, .8, .7], [.6, .5, .5]];
+    let y = 0; tiers.forEach(([w, d, h], i) => { const b = box(t, M.brick, 0, y + h / 2, 0, w, h, d); y += h; if (i < 5) box(t, M.plaster, 0, y + .04, 0, w + .12, .08, d + .12); });
+    box(t, M.gold, 0, y + .25, 0, .25, .5, .25);
+    // split face: inner side flat already; offset so inner face sits at x=±1.2
+    t.position.x = sx * (1.2 + 1.15); g.add(t);
+  };
+  tower(-1); tower(1);
+  // steps
+  box(g, M.batu, 0, .08, 0, 2.4, .16, 2.2);
+  g.position.set(0, 0, WALL_R); scene.add(g);
+  blob(scene, -2.35, WALL_R, 4, 3); blob(scene, 2.35, WALL_R, 4, 3);
+  // bedug
+  const b = new THREE.Group();
+  box(b, M.wood, -.85, .9, 0, .14, 1.8, .14); box(b, M.wood, .85, .9, 0, .14, 1.8, .14);
+  box(b, M.wood, 0, 1.75, 0, 1.9, .14, .18); box(b, M.wood, 0, .25, 0, 1.9, .12, .5);
+  const drum = new THREE.Mesh(new THREE.CylinderGeometry(.62, .62, 1.25, 28), new THREE.MeshStandardMaterial({ color: '#7A2E2A', roughness: .7 }));
+  drum.rotation.z = Math.PI / 2; drum.position.y = 1.05; b.add(drum);
+  const skin = new THREE.Mesh(new THREE.CircleGeometry(.6, 28), new THREE.MeshStandardMaterial({ color: '#E8D7B0', roughness: .9 }));
+  skin.position.set(0, 1.05, 0); skin.rotation.y = Math.PI / 2; skin.position.x = .63; b.add(skin);
+  const skin2 = skin.clone(); skin2.position.x = -.63; skin2.rotation.y = -Math.PI / 2; b.add(skin2);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(.63, .04, 6, 28), M.gold); ring.rotation.y = Math.PI / 2; ring.position.set(.6, 1.05, 0); b.add(ring);
+  const ring2 = ring.clone(); ring2.position.x = -.6; b.add(ring2);
+  b.position.set(6.4, 0, 25.2); b.rotation.y = -.5; scene.add(b); blob(scene, 6.4, 25.2, 3, 2.4);
+  [drum, skin, skin2].forEach(m => { m.userData.action = { type: 'bedug' }; hotspots.push(m); });
+  bedug = drum;
+  const lab = sprite(labelCanvas('Ketuk untuk membunyikan', 'Bel kelas'), 1.5); lab.position.set(6.4, 2.6, 25.2); scene.add(lab);
+}
+let bedug = null;
+
+function buildPavilions() {
+  const add = (n, obj, r = STRUCT_R) => { const d = ST[n].dir; obj.position.copy(d.clone().multiplyScalar(r)); obj.rotation.y = Math.atan2(d.x, d.z); scene.add(obj); return obj; };
+  // 2 Serambi Qala (suara sumber: teal)
+  { const g = pavilion({ w: 6.4, d: 3.2, roof: M.roofQala, floor: new THREE.MeshStandardMaterial({ color: '#5E9A90', roughness: .95 }) });
+    const p = g.userData.plat;
+    [-1.5, 1.5].forEach(x => { box(g, M.wood, x, p + .25, .2, .9, .5, .6); const b1 = box(g, M.plaster, x - .22, p + .58, .2, .44, .03, .6); b1.rotation.z = .35; const b2 = box(g, M.plaster, x + .22, p + .58, .2, .44, .03, .6); b2.rotation.z = -.35; });
+    const ar = sprite(labelCanvas('Minggu 2–3', "Mufradat & Ta'aruf", '#2F655D'), 1.7); ar.position.set(0, p + 2.2, -1.75); g.add(ar);
+    add(2, g); }
+  // 3 Sanad: shelves + golden threads
+  { const g = pavilion({ w: 5.2, d: 3.4 }); const p = g.userData.plat; const r = rnd(5);
+    const cols = ['#7A2E2A', '#2F655D', '#6B4423', '#1F3D2B', '#9C6B2F', '#4B3A6B'].map(c => new THREE.MeshStandardMaterial({ color: c, roughness: .8 }));
+    const bookPts = [];
+    [-1.3, 1.3].forEach((sx, si) => {
+      box(g, M.wood, sx, p + 1.1, 1.2, 2.1, 2.2, .45);
+      for (let row = 0; row < 4; row++) { box(g, M.woodL, sx, p + .25 + row * .52, 1.0, 2.0, .04, .42); let x = sx - .92;
+        while (x < sx + .9) { const bw = .06 + r() * .07, bh = .32 + r() * .14; const m = box(g, cols[Math.floor(r() * cols.length)], x + bw / 2, p + .27 + row * .52 + bh / 2, .96, bw, bh, .3); if (r() < .18) bookPts.push(m.position.clone().add(new THREE.Vector3(0, bh / 2 - .05, -.16))); x += bw + .01; } }
+    });
+    const lp = []; for (let i = 0; i < bookPts.length - 1; i++) { lp.push(bookPts[i], bookPts[i + 1]); }
+    const lg = new THREE.BufferGeometry().setFromPoints(lp); g.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: '#F2C14E' })));
+    const ar = sprite(labelCanvas('Minggu 4–7', 'Rak Nahwu'), 1.5); ar.position.set(0, p + 2.25, -1.85); g.add(ar);
+    add(3, g); }
+  // 4 Cermin AI: carved mirror
+  { const g = new THREE.Group(); box(g, M.batu, 0, .15, 0, 4, .3, 2.4); blob(g, 0, 0, 6, 4);
+    box(g, M.wood, 0, 2.1, .3, 2.9, 3.6, .22); box(g, M.gold, 0, 3.98, .3, 2.3, .22, .26); box(g, M.gold, 0, 4.2, .3, 1.2, .26, .26);
+    const crest = new THREE.Mesh(new THREE.TorusGeometry(.6, .08, 8, 24, Math.PI), M.gold); crest.position.set(0, 4.3, .3); g.add(crest);
+    let mirror;
+    if (!isTouch) { mirror = new Reflector(new THREE.PlaneGeometry(2.3, 3.0), { textureWidth: 512, textureHeight: 640, color: 0xc9d4d6, clipBias: .003 }); }
+    else mirror = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 3.0), new THREE.MeshStandardMaterial({ color: '#C9D8DC', metalness: .9, roughness: .12, envMapIntensity: 1 }));
+    mirror.userData.keep = true; mirror.position.set(0, 2.1, .17); mirror.rotation.y = Math.PI; g.add(mirror);
+    // two stands with paragraph cards on the sides
+    [-1.9, 1.9].forEach(x => { cyl(g, M.wood, x, .9, .4, .06, 1.6); });
+    add(4, g, STRUCT_R); }
+  // 5 Mimbar Qultu (suara penulis: warm gold)
+  { const g = new THREE.Group(); box(g, M.batu, 0, .2, 0, 4.2, .4, 3.4); blob(g, 0, 0, 6, 5);
+    box(g, M.wood, 0, .9, .3, 2.2, 1.0, 1.8); box(g, M.qultu, 0, 1.42, .3, 2.3, .06, 1.9);
+    for (let i = 0; i < 4; i++) box(g, M.woodL, 0, .45 + i * .26, -.85 - (3 - i) * .32 + .6, 1.2, .1, .34);
+    [-1, 1].forEach(sx => [-0.5, 1.1].forEach(z => cyl(g, M.wood, sx * 1.0, 2.6, z, .08, 2.4)));
+    roofTiers(g, 2.4, 2.0, 3.8, M.roofQultu, .7, 1.0);
+    cyl(g, new THREE.MeshStandardMaterial({ color: '#333', metalness: .6, roughness: .4 }), 0, 1.95, .1, .02, 1.0);
+    const mic = new THREE.Mesh(new THREE.SphereGeometry(.07, 12, 8), new THREE.MeshStandardMaterial({ color: '#222', roughness: .5 })); mic.position.set(0, 2.5, .1); g.add(mic);
+    const ar = sprite(labelCanvas('Minggu 8 & 16', 'Panggung Lagu', '#8A4F12'), 1.4); ar.position.set(0, 3.05, -1.25); g.add(ar);
+    add(5, g); }
+  // 6 Bahtsul Masail: octagonal pavilion, round table, cushions
+  { const g = new THREE.Group(); const p = .3;
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(3, 3.1, p, 8), M.batu); base.position.y = p / 2; g.add(base);
+    const fl = new THREE.Mesh(new THREE.CircleGeometry(2.8, 8), M.tegel); fl.rotation.x = -Math.PI / 2; fl.position.y = p + .005; g.add(fl);
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + Math.PI / 8; cyl(g, M.wood, Math.sin(a) * 2.6, p + 1.4, Math.cos(a) * 2.6, .09, 2.8); }
+    const ro = new THREE.Mesh(new THREE.ConeGeometry(3.7, 1.9, 8, 1, true), M.roof); ro.position.y = p + 2.8 + .95; ro.rotation.y = Math.PI / 8; g.add(ro);
+    box(g, M.gold, 0, p + 4.75, 0, .2, .3, .2);
+    const tbl = new THREE.Mesh(new THREE.CylinderGeometry(.9, .9, .08, 24), M.woodL); tbl.position.y = p + .38; g.add(tbl);
+    cyl(g, M.wood, 0, p + .18, 0, .25, .36);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; box(g, M.cloth, Math.sin(a) * 1.55, p + .06, Math.cos(a) * 1.55, .6, .12, .6, a); }
+    [[-.3, .1], [.25, -.2], [.1, .35]].forEach(([x, z], i) => box(g, new THREE.MeshStandardMaterial({ color: ['#7A2E2A', '#1F3D2B', '#6B4423'][i] }), x, p + .47, z, .32, .08, .24, i));
+    blob(g, 0, 0, 8, 8);
+    const ar = sprite(labelCanvas('Minggu 11–13', "Istima' & Qira'ah"), 1.5); ar.position.set(0, 2.15, -2.75); g.add(ar);
+    add(6, g, 18.9); }
+  // 7 Serambi Akhir: veranda with steps, bench, lanterns
+  { const g = pavilion({ w: 6.0, d: 3.0, plat: .6 }); const p = g.userData.plat;
+    for (let i = 0; i < 2; i++) box(g, M.batu, 0, .1 + i * .2, -1.75 - (1 - i) * .3, 2.4, .2, .3);
+    box(g, M.woodL, 0, p + .25, .6, 3.2, .1, .5); box(g, M.wood, -1.4, p + .12, .6, .12, .24, .4); box(g, M.wood, 1.4, p + .12, .6, .12, .24, .4);
+    [-3, 3].forEach(x => { const l = box(g, M.lamp, x, p + 2.2, -1.55, .22, .32, .22); box(g, M.wood, x, p + 2.45, -1.55, .3, .06, .3); });
+    add(7, g); }
+}
+
+/* merge static meshes per material to keep draw calls low */
+function mergeStatic() {
+  scene.updateMatrixWorld(true);
+  const groups = new Map(), remove = [];
+  scene.traverse(o => {
+    if (!o.isMesh || o.isInstancedMesh || o.isReflector || o.userData.action || o.userData.keep || o === bedug) return;
+    if (o.material.isShaderMaterial || Array.isArray(o.material)) return;
+    const g = o.geometry; if (!g.index || !g.attributes.uv || !g.attributes.normal) return;
+    const key = o.material.uuid; if (!groups.has(key)) groups.set(key, { mat: o.material, geos: [] });
+    const c = new THREE.BufferGeometry(); ['position', 'normal', 'uv'].forEach(a => c.setAttribute(a, g.attributes[a].clone())); c.setIndex(g.index.clone());
+    c.applyMatrix4(o.matrixWorld); groups.get(key).geos.push(c); remove.push(o);
+  });
+  remove.forEach(o => o.parent.remove(o));
+  groups.forEach(({ mat, geos }) => { const geo = mergeGeometries(geos, false); if (!geo) return; const m = new THREE.Mesh(geo, mat); if (mat.transparent) m.renderOrder = 1; scene.add(m); });
+}
+
+/* main pendopo (GLB) */
+const PEN_S = 2.4;
+function buildPendopo(gltf) {
+  const root = gltf.scene; root.scale.setScalar(PEN_S);
+  root.traverse(o => { if (o.isMesh) { o.material.side = THREE.DoubleSide; if (o.material.map) o.material.map.anisotropy = Math.min(8, maxAniso); } });
+  scene.add(root);
+  blob(scene, 0, 0, 12, 12);
+  const sk = .55 * PEN_S, y = 2.05;
+  const lab = [['Tiang 1', "Istima'", -sk, sk], ['Tiang 2', 'Kalam', -sk, -sk], ['Tiang 3', "Qira'ah", sk, -sk], ['Tiang 4', 'Kitabah', sk, sk]];
+  lab.forEach(([a, b, x, z]) => { const sp = sprite(labelCanvas(a, b), 1.25); sp.position.set(x * 1.35, y + .62, z * 1.35); scene.add(sp); });
+  const u = sprite(labelCanvas('Umpak', 'Mufradat', '#3a3a3a'), 1.1); u.position.set(-sk - .55, 1.25, sk + .55); scene.add(u);
+  const at = sprite(labelCanvas('Atap', 'Struktur kalimat'), 1.6); at.position.set(3.4, 5.7, 6.6); scene.add(at);
+  heightZones.push({ x: 0, z: 0, hw: 1.62 * PEN_S, hd: 1.62 * PEN_S, h: .3 * PEN_S });
+}
+
+/* ---------- camera control ---------- */
+let yaw = Math.PI, pitch = -0.02; // start facing north (-z)? yaw 0 looks -z
+yaw = 0;
+function applyLook() { rig.rotation.y = yaw; camera.rotation.x = pitch; }
+applyLook();
+rig.position.set(0, 0, 40);
+function groundH(x, z) { for (const zn of heightZones) if (Math.abs(x - zn.x) < zn.hw && Math.abs(z - zn.z) < zn.hd) return zn.h; return 0; }
+function clampPos(v) {
+  const r = Math.hypot(v.x, v.z);
+  const outsideGate = v.z > 18 && Math.abs(v.x) < 9;
+  if (!outsideGate && r > WALL_R - 1.2) { v.x *= (WALL_R - 1.2) / r; v.z *= (WALL_R - 1.2) / r; }
+  if (outsideGate) { v.z = Math.min(v.z, 44); if (v.z > WALL_R - .6 && Math.abs(v.x) > 1.0 && v.z < WALL_R + .8) v.x = Math.sign(v.x) * Math.min(Math.abs(v.x), 1.0); }
+  return v;
+}
+function yawTo(from, to) { return Math.atan2(-(to.x - from.x), -(to.z - from.z)); }
+function angLerp(a, b, t) { let d = ((b - a + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; return a + d * t; }
+
+let tween = null;
+function moveTo(target, look, dur, done, viaArc = false) {
+  const start = rig.position.clone(), y0 = yaw, p0 = pitch;
+  const y1 = look ? yawTo(target, look) : yawTo(start, target);
+  const p1 = look ? Math.atan2(look.y - (EYE + groundH(target.x, target.z)), Math.hypot(look.x - target.x, look.z - target.z)) : 0;
+  const dist = start.distanceTo(target);
+  dur = dur ?? Math.min(4.2, Math.max(.7, dist / 5.5));
+  let arc = null;
+  if (viaArc) { const r0 = Math.hypot(start.x, start.z), r1 = Math.hypot(target.x, target.z); if (r0 > 9 && r1 > 9) { const a0 = Math.atan2(start.x, start.z), a1 = Math.atan2(target.x, target.z); let da = a1 - a0; if (da > Math.PI) da -= 2 * Math.PI; if (da < -Math.PI) da += 2 * Math.PI; arc = { a0, da, r0, r1 }; if (dur > .05) dur = Math.min(5, Math.max(1, Math.abs(da) * (r0 + r1) / 2 / 5.5)); } }
+  tween = { t: 0, dur, start, target: target.clone(), y0, y1, p0, p1, done, arc };
+}
+function stepTween(dt) {
+  if (!tween) return;
+  tween.t = Math.min(1, tween.t + dt / tween.dur); const k = tween.t < .5 ? 2 * tween.t * tween.t : 1 - Math.pow(-2 * tween.t + 2, 2) / 2;
+  if (tween.arc) { const { a0, da, r0, r1 } = tween.arc; const a = a0 + da * k, r = r0 + (r1 - r0) * k; rig.position.set(Math.sin(a) * r, 0, Math.cos(a) * r); }
+  else rig.position.lerpVectors(tween.start, tween.target, k);
+  const kl = Math.min(1, k * 1.25); yaw = angLerp(tween.y0, tween.y1, kl); pitch = tween.p0 + (tween.p1 - tween.p0) * kl;
+  if (tween.t >= 1) { const d = tween.done; tween = null; d && d(); }
+}
+let eyeY = 0;
+
+// view distance so that the content span fits horizontally
+function viewDist(span) { const v = camera.fov * Math.PI / 180, h = 2 * Math.atan(Math.tan(v / 2) * camera.aspect); return THREE.MathUtils.clamp((span + .5) / Math.tan(h / 2), 5.0, 9.5); }
+
+let cur = -1, tourStarted = false;
+function goToStation(n, opts = {}) {
+  n = THREE.MathUtils.clamp(n, 0, 7);
+  const st = ST[n]; const d = viewDist(st.span);
+  const target = st.a.clone().addScaledVector(st.face, -d); target.y = 0; clampPos(target);
+  const look = st.a.clone(); look.y = 2.0;
+  closePanel(); hideGuide();
+  const via = cur >= 2 && n >= 2;
+  moveTo(target, look, opts.instant ? .01 : undefined, () => arrive(n), via);
+  cur = n; updateTour(); setHash(n);
+}
+function arrive(n) {
+  const v = store.get('visited', []); if (!v.includes(n)) { v.push(n); store.set('visited', v); }
+  renderDots(); showGuide(n); chime();
+}
+
+/* ---------- input ---------- */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let drag = null;
+const el = renderer.domElement;
+el.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, t: performance.now(), id: e.pointerId, moved: false }; el.setPointerCapture(e.pointerId); });
+el.addEventListener('pointermove', e => {
+  if (drag && drag.id === e.pointerId) {
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) drag.moved = true;
+    if (drag.moved) { const k = (isTouch ? 0.0055 : 0.0042); yaw += dx * k; pitch = THREE.MathUtils.clamp(pitch + dy * k, -1.15, 1.15); if (tween) tween = null; }
+  } else if (!isTouch) hover(e);
+});
+el.addEventListener('pointerup', e => { if (drag && !drag.moved && performance.now() - drag.t < 600) click(e); drag = null; });
+el.addEventListener('pointercancel', () => { drag = null; });
+function setNdc(e) { const r = el.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); }
+let hovered = null;
+function hover(e) {
+  setNdc(e); const hit = ray.intersectObjects(hotspots, false)[0];
+  const o = hit && hit.distance < 30 ? hit.object : null;
+  if (o !== hovered) { if (hovered && hovered.isSprite) hovered.material.opacity = 1; hovered = o; el.style.cursor = o ? 'pointer' : 'grab'; if (o && o.isSprite) o.material.opacity = .85; }
+}
+function click(e) {
+  setNdc(e);
+  const hit = ray.intersectObjects(hotspots, false)[0];
+  if (hit && hit.distance < 40) { act(hit.object.userData.action); return; }
+  // walk on the ground plane
+  const p = new THREE.Vector3(); const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  if (ray.ray.intersectPlane(plane, p) && p.distanceTo(rig.position) < 40) {
+    p.y = 0; clampPos(p); hideGuide(); showRipple(p);
+    const look = p.clone().addScaledVector(p.clone().sub(rig.position).setY(0).normalize(), 6); look.y = EYE;
+    moveTo(p, look);
+  }
+}
+function act(a) {
+  if (!a) return;
+  if (a.type === 'panel') { if (cur !== a.n) { cur = a.n; updateTour(); setHash(a.n); } openPanel(a.n, a.tab); }
+  else if (a.type === 'go') goToStation(a.n);
+  else if (a.type === 'bedug') { hitBedug(); }
+  else if (a.type === 'ar') { cur = 1; openPanel(1, 'bahan'); }
+}
+const ripple = new THREE.Mesh(new THREE.RingGeometry(.3, .42, 32), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
+ripple.userData.keep = true; ripple.rotation.x = -Math.PI / 2; scene.add(ripple); let rippleT = 1;
+function showRipple(p) { ripple.position.set(p.x, .05, p.z); rippleT = 0; }
+
+const keys = {};
+addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('textarea,input')) return;
+  keys[e.code] = true;
+  if (e.code === 'Escape') { closePanel(); closeOv(); }
+  if (e.code === 'KeyN' || e.code === 'PageDown') $('#tNext').click();
+  if (e.code === 'KeyP' || e.code === 'PageUp') $('#tPrev').click();
+});
+addEventListener('keyup', e => { keys[e.code] = false; });
+function keyMove(dt) {
+  let f = 0, s = 0, t = 0;
+  if (keys.KeyW || keys.ArrowUp) f += 1; if (keys.KeyS || keys.ArrowDown) f -= 1;
+  if (keys.KeyD) s += 1; if (keys.KeyA) s -= 1; if (keys.ArrowLeft) t += 1; if (keys.ArrowRight) t -= 1;
+  if (!f && !s && !t) return; tween = null;
+  yaw += t * dt * 1.6;
+  const sp = 4.2 * dt, fx = -Math.sin(yaw), fz = -Math.cos(yaw);
+  rig.position.x += (fx * f + -fz * s) * sp; rig.position.z += (fz * f + fx * s) * sp; clampPos(rig.position);
+}
+
+/* ---------- audio ---------- */
+let actx = null, soundOn = store.get('sound', true);
+function ac() { if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { } } if (actx && actx.state === 'suspended') actx.resume().catch(() => { }); return actx; }
+function hitBedug() {
+  const t0 = performance.now(); bedugAnim = t0;
+  if (soundOn && ac()) {
+    const a = actx, t = a.currentTime, o = a.createOscillator(), g = a.createGain(), o2 = a.createOscillator(), g2 = a.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(92, t); o.frequency.exponentialRampToValueAtTime(48, t + .5);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.9, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + 1.6);
+    o2.type = 'triangle'; o2.frequency.setValueAtTime(180, t); o2.frequency.exponentialRampToValueAtTime(90, t + .15);
+    g2.gain.setValueAtTime(.35, t); g2.gain.exponentialRampToValueAtTime(.0001, t + .25);
+    const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 600;
+    o.connect(g).connect(lp).connect(a.destination); o2.connect(g2).connect(a.destination);
+    o.start(t); o2.start(t); o.stop(t + 1.7); o2.stop(t + .3);
+  }
+  toast('Tok tok tok! Warga berkumpul. Baca papan Gapura, lalu tekan › untuk berpindah.');
+  if (cur !== 0) goToStation(0); else openPanel(0, 'bahan');
+}
+let bedugAnim = 0;
+function chime() {
+  if (!soundOn || !actx) return; const a = actx, t = a.currentTime;
+  [[784, 0], [1175, .09]].forEach(([f, d]) => { const o = a.createOscillator(), g = a.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(.0001, t + d); g.gain.exponentialRampToValueAtTime(.12, t + d + .02); g.gain.exponentialRampToValueAtTime(.0001, t + d + .9); o.connect(g).connect(a.destination); o.start(t + d); o.stop(t + d + 1); });
+}
+let speaking = false;
+function speak(text, btn) {
+  const synth = window.speechSynthesis; if (!synth) { toast('Peramban ini belum mendukung suara pemandu.'); return; }
+  if (speaking) { synth.cancel(); speaking = false; btn && (btn.textContent = '🔊 Dengarkan'); return; }
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'id-ID'; u.rate = .98;
+  const v = synth.getVoices().find(v => /^id/i.test(v.lang)); if (v) u.voice = v;
+  u.onend = u.onerror = () => { speaking = false; btn && (btn.textContent = '🔊 Dengarkan'); };
+  synth.speak(u); speaking = true; btn && (btn.textContent = '■ Berhenti');
+}
+
+/* ---------- UI ---------- */
+function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => e.classList.remove('show'), 3600); }
+function renderDots() {
+  const v = store.get('visited', []);
+  $('#dots').innerHTML = S.map((s, i) => `<i class="${v.includes(i) ? 'on' : ''} ${i === cur ? 'cur' : ''}" title="Titik ${i}"></i>`).join('');
+}
+function updateTour() {
+  $('#tSmall').textContent = cur < 0 ? 'TUR TERPANDU' : `TITIK ${cur}`;
+  $('#tName').textContent = cur < 0 ? 'Mulai di Gapura' : S[cur].name;
+  $('#tPrev').disabled = cur <= 0; $('#tNext').disabled = cur >= 7;
+  $('#tNext').setAttribute('aria-label', cur < 0 ? 'Mulai tur' : 'Titik berikutnya');
+  renderDots(); renderMap();
+}
+$('#tNext').onclick = () => { ac(); goToStation(cur < 0 ? 0 : cur + 1); };
+$('#tPrev').onclick = () => { if (cur > 0) goToStation(cur - 1); };
+$('#tourOpen').onclick = () => { ac(); if (cur < 0) goToStation(0); else openPanel(cur, 'pandu'); };
+
+function showGuide(n) {
+  const s = S[n]; $('#gTitle').textContent = `Titik ${n} · ${s.name}`; $('#gQ').textContent = s.q; $('#gText').textContent = s.guide;
+  $('#guide').classList.add('show'); $('#gOpen').onclick = () => openPanel(n, 'tugas'); $('#gSpeak').textContent = '🔊 Dengarkan'; speaking && speechSynthesis.cancel(); speaking = false;
+  $('#gSpeak').onclick = e => speak(s.guide, e.currentTarget);
+}
+function hideGuide() { $('#guide').classList.remove('show'); }
+$('#gClose').onclick = hideGuide;
+
+let pTab = 'pandu', pN = 0;
+function openPanel(n, tab = 'pandu') {
+  pN = n; pTab = tab; const s = S[n];
+  $('#pNum').textContent = n; $('#pTitle').textContent = s.name; $('#pAr').textContent = s.ar || '';
+  renderPanel(); hideGuide();
+  $('#panel').classList.add('open'); $('#panel').setAttribute('aria-hidden', 'false');
+  const v = store.get('visited', []); if (!v.includes(n)) { v.push(n); store.set('visited', v); renderDots(); }
+}
+function closePanel() { $('#panel').classList.remove('open'); $('#panel').setAttribute('aria-hidden', 'true'); if (speaking) { speechSynthesis.cancel(); speaking = false; } }
+$('#pClose').onclick = closePanel;
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => { pTab = b.dataset.t; renderPanel(); });
+function videoBlock(n) { return ''; }
+function actionButtons(n, withVideo = false) {
+  return `<div class="actions"><button class="btn emas" data-allcopy="1">📋 Salin semua jawabanku</button></div>`;
+}
+function ansBlock(n) {
+  const a = S[n].answers || []; if (!a.length) return '';
+  return `<h3>Jawabanmu</h3><p class="src">Tersimpan di peramban ini saja. Tekan "Salin semua jawabanku", lalu tempel di forum atau penugasan LMS e-Santri.</p>` + a.map(x => `<label style="display:block;font-weight:600;font-size:13px;margin-top:10px">${x.label}</label><textarea class="ans" data-key="${x.k}" data-min="${x.min}" data-max="${x.max}" placeholder="Tulis di sini…"></textarea><div class="cnt"></div>`).join('');
+}
+function allAnswers() {
+  const out = ['JAWABAN MAJLIS BAHASA ARAB · Bahasa Arab (MI1223)', 'Kode peserta: ' + (store.get('kode', '') || '(isi kode peserta)'), ''];
+  S.forEach((s, n) => (s.answers || []).forEach(x => { const v = store.get('ans.' + x.k, ''); if (v) out.push(`[Titik ${n}] ${x.label}\n${v}\n`); }));
+  const lab = store.get('label2', {}); if (Object.keys(lab).length) out.push('[Pencocokan] ' + Object.entries(lab).map(([k, v]) => k + '=' + v).join('; '));
+  return out.join('\n');
+}
+function footer() { return `<div class="foot">Rujukan utama: Hamid dkk. (2025), Al-'Arabiyyatu lil Hayah, diringkas dengan kata sendiri. Contoh dan teks bertanda rekaan adalah latihan. Poster dan ruang VR dibuat dengan bantuan AI (Claude); harakat dan ejaan Arab harus diperiksa dosen.</div>`; }
+function renderPanel() {
+  const s = S[pN], n = pN;
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === pTab)));
+  let h = '';
+  if (pTab === 'pandu') {
+    h = `<p class="q">${s.q}</p><p>${s.guide}</p><div class="links"><button class="btn alt" id="pSpeak">🔊 Dengarkan pemandu</button></div>${actionButtons(n, true)}
+      <div class="links">${n > 0 ? `<button class="btn alt" data-go="${n - 1}">‹ Titik ${n - 1}</button>` : ''}${n < 7 ? `<button class="btn" data-go="${n + 1}">Titik ${n + 1}: ${S[n + 1].name} ›</button>` : ''}</div>`;
+  } else if (pTab === 'bahan') h = s.bahan();
+  else {
+    h = `<h3>Tugas di titik ini</h3><ol class="tasks">${s.tasks.map(t => `<li>${t}</li>`).join('')}</ol>
+      ${ansBlock(n)}${actionButtons(n)}<label style="display:block;font-weight:600;font-size:13px;margin-top:12px">Kode peserta (inisial + 2 digit NIM)</label><input id="kode" style="width:100%;border-radius:10px;border:1px solid #cdbd9c;padding:10px;font:inherit;font-size:14px;background:#fff" placeholder="mis. AM23">
+      ${n < 7 ? `<div class="links"><button class="btn" data-go="${n + 1}">Lanjut ke Titik ${n + 1}: ${S[n + 1].name} ›</button></div>` : `<p class="note"><b>Terima kasih sudah berjalan sampai sini.</b> Bandingkan jawaban PRA dan PASCA-mu. Hasilnya akan dibahas di pertemuan tatap muka.</p>`}`;
+  }
+  $('#pbody').innerHTML = h + footer(); $('#pbody').scrollTop = 0;
+  wirePanel(n);
+}
+function copyText(t, btn) {
+  const ok = () => { const o = btn.textContent; btn.textContent = '✓ Tersalin'; setTimeout(() => btn.textContent = o, 1600); };
+  try { navigator.clipboard.writeText(t).then(ok, () => toast('Tidak bisa menyalin otomatis. Tekan lama teksnya untuk menyalin.')); } catch (e) { toast('Tidak bisa menyalin otomatis. Tekan lama teksnya untuk menyalin.'); }
+}
+function wirePanel(n) {
+  const b = $('#pbody');
+  b.querySelectorAll('[data-go]').forEach(x => x.onclick = () => goToStation(+x.dataset.go));
+  const sp = $('#pSpeak'); if (sp) sp.onclick = () => speak(S[n].guide, sp);
+  // labelling chips (station 2)
+  const lab = store.get('label2', {});
+  b.querySelectorAll('.sent').forEach(se => {
+    const k = se.dataset.k; if (lab[k]) { se.dataset.l = lab[k]; se.querySelector(`[data-v="${lab[k]}"]`).classList.add('on'); }
+    se.querySelectorAll('.chips button').forEach(c => c.onclick = () => {
+      const on = se.dataset.l === c.dataset.v; se.querySelectorAll('.chips button').forEach(x => x.classList.remove('on'));
+      if (on) { delete se.dataset.l; delete lab[k]; } else { se.dataset.l = c.dataset.v; c.classList.add('on'); lab[k] = c.dataset.v; }
+      store.set('label2', lab);
+    });
+  });
+  // circle words (station 4)
+  const g1 = $('#g1'); if (g1) { const upd = () => $('#g1c').textContent = g1.querySelectorAll('.mark').length; g1.querySelectorAll('.w').forEach(w => w.onclick = () => { w.classList.toggle('mark'); upd(); }); }
+  // answers
+  b.querySelectorAll('textarea.ans').forEach(t => {
+    const k = 'ans.' + t.dataset.key, mn = +t.dataset.min, mx = +t.dataset.max, c = t.nextElementSibling;
+    t.value = store.get(k, ''); const cnt = () => { const w = (t.value.trim().match(/\S+/g) || []).length; c.textContent = mx ? `${w} kata · target ${mn}–${mx}` : `${w} kata`; c.classList.toggle('ok', mx ? (w >= mn && w <= mx) : w > 0); };
+    t.oninput = () => { store.set(k, t.value); cnt(); }; cnt();
+  });
+  const kd = $('#kode'); if (kd) { kd.value = store.get('kode', ''); kd.oninput = () => store.set('kode', kd.value); }
+  b.querySelectorAll('[data-allcopy]').forEach(x => x.onclick = e => copyText(allAnswers(), e.currentTarget));
+  const ac2 = $('#allCopy2'); if (ac2) ac2.onclick = e => copyText(allAnswers(), e.currentTarget);
+  const pt = $('#pt'); if (pt) { pt.textContent = PROMPT_TEMAN; $('#ptCopy').onclick = e => copyText(PROMPT_TEMAN, e.currentTarget); }
+  const pc = $('#pc'); if (pc) { pc.textContent = PROMPT_CERMIN; $('#pcCopy').onclick = e => copyText(PROMPT_CERMIN, e.currentTarget); }
+  b.querySelectorAll('[data-say]').forEach(x => x.onclick = () => { try { if (!('speechSynthesis' in window)) throw 0; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(x.dataset.say); u.lang = 'ar-SA'; u.rate = .8; speechSynthesis.speak(u); } catch (e) { toast('Perangkat ini tidak punya suara Arab. Baca teksnya langsung.'); } });
+  const pj = $('#pj'); if (pj) { pj.textContent = PROMPT_LIRIK; $('#pjCopy').onclick = e => copyText(PROMPT_LIRIK, e.currentTarget); }
+  const dc = $('#discCopy'); if (dc) dc.onclick = e => copyText(DISCLOSURE, e.currentTarget);
+  const chk = store.get('chk7', []); b.querySelectorAll('.chk input').forEach((c, i) => { c.checked = !!chk[i]; c.onchange = () => { chk[i] = c.checked; store.set('chk7', chk); }; });
+}
+
+/* minimap */
+function renderMap() {
+  const pts = S.map((s, n) => n === 0 ? new THREE.Vector3(0, 0, WALL_R + .5) : n === 1 ? new THREE.Vector3(0, 0, 6.6) : ST[n].dir.clone().multiplyScalar(STRUCT_R - 1.5));
+  const v = store.get('visited', []);
+  $('#map').innerHTML = `<svg viewBox="-27 -27 54 54" aria-hidden="false">
+    <circle r="${WALL_R}" fill="#E4D9BF" stroke="#9C4A32" stroke-width="1.2"/>
+    <circle r="${RING_R}" fill="none" stroke="#fff" stroke-width="3.2" opacity=".8"/>
+    <rect x="-4.5" y="-4.5" width="9" height="9" rx="1" fill="#6B4423"/>
+    <rect x="-3" y="${WALL_R - 1}" width="6" height="3" fill="#E4D9BF"/>
+    <path d="M0 ${WALL_R + 2} L0 ${RING_R + 1.6}" stroke="#fff" stroke-width="3" opacity=".8"/>
+    ${pts.map((p, n) => `<g class="st" data-n="${n}" role="button" aria-label="Titik ${n}"><circle cx="${p.x.toFixed(1)}" cy="${p.z.toFixed(1)}" r="3.1" fill="${n === cur ? '#B8893B' : v.includes(n) ? '#2E5A41' : '#1F3D2B'}" stroke="#F4ECDD" stroke-width=".8"/><text x="${p.x.toFixed(1)}" y="${(p.z + 1.25).toFixed(1)}" text-anchor="middle" font-size="3.6" font-weight="700" fill="#fff" font-family="Poppins">${n}</text></g>`).join('')}
+    <g id="me"><path d="M0 -2.6 L1.9 2 L0 1 L-1.9 2 Z" fill="#C0392B" stroke="#fff" stroke-width=".5"/></g>
+  </svg>`;
+  $('#map').querySelectorAll('.st').forEach(g => g.onclick = () => { ac(); goToStation(+g.dataset.n); });
+}
+function updateMe() { const me = document.getElementById('me'); if (!me) return; let x = rig.position.x, z = rig.position.z; const r = Math.hypot(x, z); if (r > 25) { x *= 25 / r; z *= 25 / r; } me.setAttribute('transform', `translate(${x.toFixed(2)} ${z.toFixed(2)}) rotate(${(-yaw * 180 / Math.PI).toFixed(1)})`); }
+
+/* overlays */
+function openOv(id) { closeOv(); $(id).hidden = false; }
+function closeOv() { document.querySelectorAll('.ov').forEach(o => o.hidden = true); }
+document.querySelectorAll('.ov').forEach(o => { o.addEventListener('click', e => { if (e.target === o || e.target.closest('[data-close]')) o.hidden = true; }); });
+$('#bHelp').onclick = () => openOv('#welcome');
+$('#wAbout').onclick = () => openOv('#aboutOv');
+$('#wStart').onclick = () => { closeOv(); ac(); tourStarted = true; goToStation(0); };
+$('#wFree').onclick = () => { closeOv(); ac(); toast('Seret untuk melihat sekeliling, ketuk lantai untuk berjalan.'); };
+$('#bList').onclick = () => {
+  const v = store.get('visited', []);
+  $('#listBody').innerHTML = S.map((s, n) => `<button class="btn ${v.includes(n) ? '' : 'alt'}" style="width:100%;justify-content:flex-start;margin:4px 0" data-go="${n}">${v.includes(n) ? '✓' : n} · ${s.name}</button>`).join('');
+  $('#listBody').querySelectorAll('[data-go]').forEach(b => b.onclick = () => { closeOv(); ac(); goToStation(+b.dataset.go); });
+  openOv('#listOv');
+};
+$('#bSound').setAttribute('aria-pressed', String(soundOn)); $('#bSound').textContent = soundOn ? '🔊' : '🔈';
+$('#bSound').onclick = () => { soundOn = !soundOn; store.set('sound', soundOn); $('#bSound').setAttribute('aria-pressed', String(soundOn)); $('#bSound').textContent = soundOn ? '🔊' : '🔈'; if (soundOn) ac(); };
+$('#bFull').onclick = () => { const d = document.documentElement; try { if (!document.fullscreenElement) d.requestFullscreen().catch(() => toast('Layar penuh tidak tersedia di tampilan ini.')); else document.exitFullscreen(); } catch (e) { toast('Layar penuh tidak tersedia di tampilan ini.'); } };
+
+function setHash(n) { try { history.replaceState(null, '', '#titik-' + n); } catch (e) { } }
+
+/* WebXR (bila perangkat mendukung) */
+if (navigator.xr && navigator.xr.isSessionSupported) {
+  navigator.xr.isSessionSupported('immersive-vr').then(ok => {
+    if (!ok) return; renderer.xr.enabled = true; renderer.xr.setReferenceSpaceType('local-floor');
+    const b = $('#xr'); b.style.display = 'flex';
+    b.onclick = async () => { try { const s = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor'] }); camera.position.y = 0; renderer.xr.setSession(s); s.addEventListener('end', () => { camera.position.y = EYE; });
+        const c = renderer.xr.getController(0); c.addEventListener('select', () => goToStation(cur < 0 ? 0 : (cur + 1) % 8)); rig.add(c); } catch (e) { toast('Mode VR tidak dapat dibuka di tampilan ini.'); } };
+  }).catch(() => { });
+}
+
+/* ---------- resize & loop ---------- */
+function resize() { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); }
+addEventListener('resize', resize);
+const clock = new THREE.Clock(); let fpsT = 0, frames = 0;
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(.1, clock.getDelta());
+  stepTween(dt); keyMove(dt);
+  const gh = groundH(rig.position.x, rig.position.z); eyeY += (gh - eyeY) * Math.min(1, dt * 6); rig.position.y = eyeY;
+  if (!renderer.xr.isPresenting) applyLook();
+  if (rippleT < 1) { rippleT += dt * 1.5; ripple.material.opacity = 1 - rippleT; ripple.scale.setScalar(1 + rippleT * 1.5); }
+  if (bedug && bedugAnim) { const k = (performance.now() - bedugAnim) / 600; const s = k < 1 ? 1 + Math.sin(k * Math.PI * 4) * .04 * (1 - k) : 1; bedug.scale.set(s, s, s); if (k >= 1) bedugAnim = 0; }
+  const tt = clock.elapsedTime; rings.forEach((r, i) => { if (r) r.material.opacity = .55 + .35 * Math.sin(tt * 2 + i); });
+  if ((frames++ & 3) === 0) updateMe();
+  renderer.render(scene, camera);
+});
+
+/* ---------- start ---------- */
+async function start() {
+  try { await Promise.race([Promise.all([document.fonts.load('700 40px Lora'), document.fonts.load('italic 400 20px Lora'), document.fonts.load('400 20px Poppins'), document.fonts.load('600 20px Poppins'), document.fonts.load('700 60px Amiri', 'قَالَ')]), new Promise(r => setTimeout(r, 3500))]); } catch (e) { }
+  buildGate(); buildPavilions(); buildStations(); mergeStatic();
+  const gl = new GLTFLoader(manager);
+  await new Promise(res => gl.parse(Uint8Array.from(atob(window.PENDOPO_B64), c => c.charCodeAt(0)).buffer, '', g => { buildPendopo(g); res(); }, () => { $('#ltxt').textContent = 'Model balai gagal dimuat; ruang tetap bisa dijelajahi.'; res(); }));
+  await new Promise(res => { if (mgrDone) res(); else { mgrWait = res; setTimeout(res, 15000); } });
+  // look toward the gate from the approach
+  rig.position.set(0, 0, 40); yaw = 0; pitch = .04; applyLook();
+  updateTour(); renderDots();
+  $('#loader').style.display = 'none';
+  const m = location.hash.match(/^#titik-([0-7])$/);
+  if (m) { goToStation(+m[1]); } else openOv('#welcome');
+  window.__pq = { ready: true, goToStation, openPanel, rig, camera, renderer };
+}
+start();
+</script>
+</body>
+</html>
